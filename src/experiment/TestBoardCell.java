@@ -6,7 +6,7 @@ import java.util.Set;
 public class TestBoardCell {
     private int row;
     private int col;
-    private Set<TestBoardCell> adjList;
+    private Set<TestBoardCell> adjList = new HashSet<>();
     private boolean isRoom;
     private boolean isOccupied;
 
@@ -17,28 +17,28 @@ public class TestBoardCell {
     }
 
     public void addAdjacency(TestBoardCell cell) {
-        adjacencies.add(cell);
+        adjList.add(cell);
     }
 
     // Return empty set
     public Set<TestBoardCell> getAdjList() {
-        return new HashSet<>(adjacencies);
+        return new HashSet<>(adjList);
     }
 
     public void setRoom(boolean isRoom) {
-        this.isRoomCell = isRoom;
+        this.isRoom = isRoom;
     }
 
     public boolean isRoom() {
-        return isRoomCell;
+        return isRoom;
     }
 
     // Empty implementation
     public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
+        this.isOccupied = occupied;
     }
 
     public boolean getOccupied() {
-        return occupied;
+        return isOccupied;
     }
 }
