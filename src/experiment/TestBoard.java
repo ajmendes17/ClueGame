@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class TestBoard {
     private TestBoardCell[][] grid;
-    private Set<TestBoardCell> targets ;
-    private Set<TestBoardCell> visited;
+    private Set<TestBoardCell> targets = new HashSet<>();
+    private Set<TestBoardCell> visited = new HashSet<>();;
     final static int COLS = 4;
     final static int ROWS = 4;
 
@@ -61,6 +61,6 @@ public class TestBoard {
     }
 
     public Set<TestBoardCell> getTargets() {
-        return new HashSet<>();
+        return targets;
     }
 }
