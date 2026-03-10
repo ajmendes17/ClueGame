@@ -29,6 +29,31 @@ public class TestBoard {
     }
 
     public void calcTargets(TestBoardCell startCell, int pathlength) {
+        targets.clear();
+        visited.clear();
+        calcTargetsRecurse(startCell, pathlength, pathlength);
+    }
+
+    private void calcTargetsRecurse(TestBoardCell cell, int stepsLeft, int pathlength) {
+        if (visited.contains(cell)) return;
+        visited.add(cell);
+        if (!cell.getOccupied() && stepsLeft < pathlength) {
+            targets.add(cell);
+        }
+        if (stepsLeft == 0) {
+            visited.remove(cell);
+            return;
+        }
+        if (cell.isRoom()) {
+            visited.remove(cell);
+            return;
+        }
+        for (TestBoardCell neighbor : cell.getAdjList()) {
+            if (!visited.contains(neighbor) && !neighbor.getOccupied()) {
+                calcTargetsRecurse(neighbor, stepsLeft - 1, pathlength);
+            }
+        }
+        visited.remove(cell);
     }
 
     public TestBoardCell getCell(int row, int col) {
