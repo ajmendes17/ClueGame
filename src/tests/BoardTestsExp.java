@@ -21,6 +21,7 @@ class BoardTestsExp {
         board = new TestBoard();
     }
 
+    // Checking the push
     // Top-left corner [0][0] should have 2 adjacencies: right and down
     @Test
     void testAdjacencyTopLeftCorner() {
