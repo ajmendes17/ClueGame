@@ -6,9 +6,9 @@ import java.util.Set;
 public class TestBoardCell {
     private int row;
     private int col;
-    private Set<TestBoardCell> adjacencies = new HashSet<>();
-    private boolean isRoomCell;
-    private boolean occupied;
+    private Set<TestBoardCell> adjList;
+    private boolean isRoom;
+    private boolean isOccupied;
 
     // Constructor
     public TestBoardCell(int row, int col) {
