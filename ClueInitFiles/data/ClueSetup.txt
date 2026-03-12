@@ -1,0 +1,13 @@
+ // Rooms
+Room, TV Room, T
+Room, AppleTree, A
+Room, Moon Room, M
+Room, Knitting Room, K
+Room, Swimming Pool, S
+Room, Darts Room, D
+Room, Isolation Quarters, I
+Room, Yellow Room, Y
+Room, Backyard, B
+// Spaces
+Space, Walkway, W
+Space, Unused Area, X
