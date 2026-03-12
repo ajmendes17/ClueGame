@@ -1,3 +1,5 @@
+//add comments
+
 package experiment;
 
 import java.util.HashSet;
@@ -35,7 +37,9 @@ public class TestBoard {
     }
 
     private void calcTargetsRecurse(TestBoardCell cell, int stepsLeft, int pathlength) {
-        if (visited.contains(cell)) return;
+        if (visited.contains(cell)) {
+        	return;
+        }
         visited.add(cell);
         if (!cell.getOccupied() && stepsLeft < pathlength) {
             targets.add(cell);

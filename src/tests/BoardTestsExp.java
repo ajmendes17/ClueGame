@@ -15,12 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardTestsExp {
 
     private TestBoard board;
+    private int a;
 
     @BeforeEach
     void setUp() {
         board = new TestBoard();
     }
-
+    // Jake's comment
     // Top-left corner [0][0] should have 2 adjacencies: right and down
     @Test
     void testAdjacencyTopLeftCorner() {
