@@ -10,15 +10,18 @@ import clueGame.Room;
 import clueGame.DoorDirection;
 
 public class FileInitTestsMD {
+	public static final int LEGEND_SIZE = 11;
+	public static final int NUM_ROWS = 0; // Gotta change this later I'm just out of time
+	public static final int NUM_COLUMNS = 0; // Gotta change this later I'm just out of time
 
-    private Board board;
-
+	private static Board board;
+    
     @BeforeEach
-    public void setUp() {
-        board = Board.getInstance();
-        board.setConfigFiles("data/ClueMap.csv", "data/ClueSetup.txt");
-        board.initialize();
-    }
+	public void setUp() {
+		board = Board.getInstance();
+		board.setConfigFiles("data/ClueMap.csv", "data/ClueSetup.txt");
+		board.initialize();
+	}
 
     @Test
     public void testRoomMap() {
@@ -37,4 +40,11 @@ public class FileInitTestsMD {
         assertEquals("Walkway", board.getRoom('W').getName());
         assertEquals("Unused Area", board.getRoom('X').getName());
     }
+    
+    @Test
+	public void testBoardDimensions() {
+		assertEquals(NUM_ROWS, board.getNumRows());
+		assertEquals(NUM_COLUMNS, board.getNumColumns());
+	}
+    
 }
