@@ -12,6 +12,16 @@ public class BoardCell {
 	private boolean roomCenter;
 	private char secretPassage;
 	private Set<BoardCell> adjList;
+	
+	private boolean occupied;
+
+	public boolean isOccupied() {
+		return occupied;
+	}
+
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
+	}
 
 	public BoardCell(int row, int col) {
 		this.row = row;

@@ -16,33 +16,27 @@ public class TestBoardCell {
         this.col = col;
     }
 
-    // Empty implementation
     public void addAdjacency(TestBoardCell cell) {
-        
+        adjacencies.add(cell);
     }
 
-    // Return empty set
     public Set<TestBoardCell> getAdjList() {
-        return new HashSet<>(adjacencies);
+        return adjacencies;
     }
 
-    // Empty implementation
     public void setRoom(boolean isRoom) {
-        
+        this.isRoomCell = isRoom;
     }
 
-    // Return false
     public boolean isRoom() {
-        return false;
+        return isRoomCell;
     }
 
-    // Empty implementation
     public void setOccupied(boolean occupied) {
         this.occupied = occupied;
     }
 
-    // return false
     public boolean getOccupied() {
-        return false;
+        return occupied;
     }
 }

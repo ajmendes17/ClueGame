@@ -1,31 +1,66 @@
-commit 91e332d54b831dc2a6fa5732d5d9286c53a56761
+commit 94bd5a015babefb2a9ddca71e6656bd21f91727e
 Author: AJ Mendes <ajmendes17@gmail.com>
-Date:   Tue Mar 10 10:20:49 2026 -0600
+Date:   Fri Mar 13 16:18:56 2026 -0600
 
-    Implementation of BoardTestsExp
+    Basic setup for classes - Jake
 
-commit 26ebe7eb5c939b68418ed412f056186b25d0d247
+commit 67d469232a18afe3d18ed906fb5140935855b916
+Merge: 57b70ee 3509bdd
 Author: AJ Mendes <ajmendes17@gmail.com>
-Date:   Tue Mar 10 09:56:48 2026 -0600
+Date:   Thu Mar 12 15:06:21 2026 -0600
 
-    Revert "Added TestBoard and TestBoardCell"
-    
-    This reverts commit ebc46b448cdab00cd84f9f1df48d11fb641e3378.
+    Resolve merge conflicts
 
-commit ebc46b448cdab00cd84f9f1df48d11fb641e3378
+commit 57b70eec9ad8e0b5080d1e095097aa9f0550aac2
 Author: AJ Mendes <ajmendes17@gmail.com>
-Date:   Mon Mar 9 15:19:08 2026 -0600
+Date:   Thu Mar 12 14:59:13 2026 -0600
 
-    Added TestBoard and TestBoardCell
+    Downloaded requirements for LO13A and class structure
 
-commit 457abef79b750591c4540b889efd950765f2da82
+commit 3509bdd15ae34e15202a3f4e46d3fbb1525af8ff
+Author: Jake DiVito <divitojacob@gmail.com>
+Date:   Thu Mar 12 13:25:00 2026 -0600
+
+    refactored code implimented
+
+commit d0a62fb226cd1d571ca4f5835884ae8ad02d0ced
 Author: AJ Mendes <ajmendes17@gmail.com>
-Date:   Mon Mar 9 15:02:23 2026 -0600
+Date:   Tue Mar 10 20:50:16 2026 -0600
 
-    add JUnit Lib, create packages
+    final
 
-commit 853936e7274f5eb419700cc914dfe8356cd4d394
+commit 85746c60a5d382d3150fa03cf7643b6b9eaa139a
 Author: AJ Mendes <ajmendes17@gmail.com>
-Date:   Mon Mar 9 13:38:33 2026 -0600
+Date:   Tue Mar 10 14:38:45 2026 -0600
 
-    Init project
+    calcTargets basic and recursive fix
+
+commit c6edf7fb7bc58047053a3b8c561ede1daa3cc214
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 10 14:31:09 2026 -0600
+
+    calcTargets basic and recursive
+
+commit f9d3d6e337dd2a46f7cf0db268ba7402cf28a94c
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 10 14:23:04 2026 -0600
+
+    Adjacency list
+
+commit 334db7e86482c061540786adbccc124d2bdf2843
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 10 14:08:51 2026 -0600
+
+    TestBoardCell instance
+
+commit 2ef8acc14f9e0e58309936c26ddd652b3770bd1b
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 10 14:03:59 2026 -0600
+
+    check
+
+commit b1049b2c92b7058e73f61ba6c9bf4bf8d0bb8591
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 10 11:36:00 2026 -0600
+
+    init
