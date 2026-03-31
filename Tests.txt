@@ -1,0 +1,22 @@
+I selected test cells by covering different special marker types instead of copying the 306 test pattern
+
+Door tests:
+- Up door: (5,5)
+- Down door: (8,22)
+- Left door: (20,7)
+- Right door: (4,21)
+- Non-door checks use a normal walkway at (5,0) and a room label at (1,3)
+
+Room tests:
+- Moon Room label and center: (1,3) and (2,3)
+- AppleTree center: (5,14)
+- Walkway sample: (5,0)
+- Unused Area sample: (0,8)
+
+Secret passage tests:
+- Moon to Yellow: (4,1)
+- Yellow to Moon: (20,28)
+- TV to Darts: (4,28)
+- Darts to TV: (20,0)
+
+I also counted the rows, columns, and total doorway markers directly from the custom board layout.
