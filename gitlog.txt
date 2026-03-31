@@ -1,3 +1,39 @@
+commit ef111c8d176a78b3a8ac3159a916346388d6dd3c
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 31 11:27:19 2026 -0600
+
+    Adding Tests.txt with description
+
+commit 257d95c187b7389532906e695da78c8d78ce7a45
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 31 11:19:57 2026 -0600
+
+    Expanded individual tests, all tests passing
+
+commit c14d99d40d189247d799e9ff2213b7c79863f0d7
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 31 10:23:07 2026 -0600
+
+    Refactored Board and continued testing
+
+commit 4f5dc92349ad093166724c69592212d5d0185b22
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 17 15:13:41 2026 -0600
+
+    added the static ints
+
+commit 0f0b868ea74a6ed6eebc7237c1171155d54ad71d
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 17 15:07:31 2026 -0600
+
+    Got all tests passing and working with new data config. Framework for individual test case
+
+commit a304ea9ebff0e95f5ed42b50fe852c047129288b
+Author: Jake DiVito <divitojacob@gmail.com>
+Date:   Tue Mar 17 12:56:53 2026 -0600
+
+    All 306 tests passing
+
 commit 94bd5a015babefb2a9ddca71e6656bd21f91727e
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Fri Mar 13 16:18:56 2026 -0600
