@@ -196,20 +196,137 @@ public class Board {
 				BoardCell cell = grid[row][col];
 				cell.getAdjList().clear();
 
-				if (row > 0) {
-					cell.addAdj(grid[row - 1][col]);
+				if (isUnused(cell)) {
+					continue;
 				}
-				if (row < numRows - 1) {
-					cell.addAdj(grid[row + 1][col]);
-				}
-				if (col > 0) {
-					cell.addAdj(grid[row][col - 1]);
-				}
-				if (col < numColumns - 1) {
-					cell.addAdj(grid[row][col + 1]);
+
+				if (isWalkway(cell)) {
+					addWalkwayAdjacencies(cell);
+				} else if (cell.isRoomCenter()) {
+					addRoomCenterAdjacencies(cell);
 				}
 			}
 		}
+	}
+
+	private void addWalkwayAdjacencies(BoardCell cell) {
+		int row = cell.getRow();
+		int col = cell.getCol();
+
+		addWalkwayOrDoorAdjacency(cell, row - 1, col);
+		addWalkwayOrDoorAdjacency(cell, row + 1, col);
+		addWalkwayOrDoorAdjacency(cell, row, col - 1);
+		addWalkwayOrDoorAdjacency(cell, row, col + 1);
+	}
+
+	private void addWalkwayOrDoorAdjacency(BoardCell source, int row, int col) {
+		if (!isInBounds(row, col)) {
+			return;
+		}
+
+		BoardCell neighbor = grid[row][col];
+		if (isWalkway(neighbor)) {
+			source.addAdj(neighbor);
+			return;
+		}
+
+		if (neighbor.isDoorway() && doorwayFacesCell(neighbor, source)) {
+			Room room = getRoom(neighbor);
+			if (room != null && room.getCenterCell() != null) {
+				source.addAdj(room.getCenterCell());
+			}
+		}
+	}
+
+	private void addRoomCenterAdjacencies(BoardCell centerCell) {
+		char roomInitial = centerCell.getInitial();
+
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numColumns; col++) {
+				BoardCell cell = grid[row][col];
+
+				if (cell.getInitial() != roomInitial || !cell.isDoorway()) {
+					continue;
+				}
+
+				BoardCell doorwayDestination = getDoorwayDestination(cell);
+				if (doorwayDestination != null) {
+					centerCell.addAdj(doorwayDestination);
+				}
+			}
+		}
+
+		BoardCell secretPassageDestination = getSecretPassageDestination(centerCell);
+		if (secretPassageDestination != null) {
+			centerCell.addAdj(secretPassageDestination);
+		}
+	}
+
+	private BoardCell getDoorwayDestination(BoardCell doorway) {
+		int row = doorway.getRow();
+		int col = doorway.getCol();
+
+		switch (doorway.getDoorDirection()) {
+		case UP:
+			row--;
+			break;
+		case DOWN:
+			row++;
+			break;
+		case LEFT:
+			col--;
+			break;
+		case RIGHT:
+			col++;
+			break;
+		case NONE:
+		default:
+			return null;
+		}
+
+		if (!isInBounds(row, col)) {
+			return null;
+		}
+
+		BoardCell destination = grid[row][col];
+		return isWalkway(destination) ? destination : null;
+	}
+
+	private BoardCell getSecretPassageDestination(BoardCell centerCell) {
+		char roomInitial = centerCell.getInitial();
+
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numColumns; col++) {
+				BoardCell cell = grid[row][col];
+				if (cell.getInitial() != roomInitial || cell.getSecretPassage() == ' ') {
+					continue;
+				}
+
+				Room destinationRoom = roomMap.get(cell.getSecretPassage());
+				if (destinationRoom != null) {
+					return destinationRoom.getCenterCell();
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private boolean doorwayFacesCell(BoardCell doorway, BoardCell candidate) {
+		BoardCell destination = getDoorwayDestination(doorway);
+		return destination != null && destination == candidate;
+	}
+
+	private boolean isWalkway(BoardCell cell) {
+		return cell.getInitial() == 'W';
+	}
+
+	private boolean isUnused(BoardCell cell) {
+		return cell.getInitial() == 'X';
+	}
+
+	private boolean isInBounds(int row, int col) {
+		return row >= 0 && row < numRows && col >= 0 && col < numColumns;
 	}
 
 	public Set<BoardCell> getAdjList(int row, int col) {
