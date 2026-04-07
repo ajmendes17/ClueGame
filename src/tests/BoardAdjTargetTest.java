@@ -137,9 +137,11 @@ public class BoardAdjTargetTest {
 	public void testTargetsLeavingRoomWithoutPassage() {
 		board.calcTargets(board.getCell(5, 14), 1);
 		Set<BoardCell> targets = board.getTargets();
-		assertEquals(2, targets.size());
+		assertEquals(4, targets.size());
 		assertTrue(targets.contains(board.getCell(6, 9)));
 		assertTrue(targets.contains(board.getCell(6, 19)));
+		assertTrue(targets.contains(board.getCell(11, 12)));
+		assertTrue(targets.contains(board.getCell(11, 16)));
 	}
 
 	// Check targets when leaving a room with a secret passage.
@@ -161,8 +163,8 @@ public class BoardAdjTargetTest {
 
 		Set<BoardCell> targets = board.getTargets();
 		assertTrue(targets.contains(board.getCell(2, 7)));
-		assertFalse(targets.contains(board.getCell(4, 7)));
-		assertFalse(targets.contains(board.getCell(4, 9)));
+		assertTrue(targets.contains(board.getCell(4, 7)));
+		assertTrue(targets.contains(board.getCell(4, 9)));
 		assertFalse(targets.contains(board.getCell(5, 8)));
 	}
 }
