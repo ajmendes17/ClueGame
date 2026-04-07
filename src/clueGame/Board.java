@@ -217,6 +217,13 @@ public class Board {
 		addWalkwayOrDoorAdjacency(cell, row + 1, col);
 		addWalkwayOrDoorAdjacency(cell, row, col - 1);
 		addWalkwayOrDoorAdjacency(cell, row, col + 1);
+
+		if (cell.isDoorway()) {
+			BoardCell roomCenter = getDoorwayRoomCenter(cell);
+			if (roomCenter != null) {
+				cell.addAdj(roomCenter);
+			}
+		}
 	}
 
 	private void addWalkwayOrDoorAdjacency(BoardCell source, int row, int col) {
@@ -231,9 +238,9 @@ public class Board {
 		}
 
 		if (neighbor.isDoorway() && doorwayFacesCell(neighbor, source)) {
-			Room room = getRoom(neighbor);
-			if (room != null && room.getCenterCell() != null) {
-				source.addAdj(room.getCenterCell());
+			BoardCell roomCenter = getDoorwayRoomCenter(neighbor);
+			if (roomCenter != null) {
+				source.addAdj(roomCenter);
 			}
 		}
 	}
@@ -245,13 +252,13 @@ public class Board {
 			for (int col = 0; col < numColumns; col++) {
 				BoardCell cell = grid[row][col];
 
-				if (cell.getInitial() != roomInitial || !cell.isDoorway()) {
+				if (!cell.isDoorway()) {
 					continue;
 				}
 
-				BoardCell doorwayDestination = getDoorwayDestination(cell);
-				if (doorwayDestination != null) {
-					centerCell.addAdj(doorwayDestination);
+				BoardCell doorwayRoomCenter = getDoorwayRoomCenter(cell);
+				if (doorwayRoomCenter == centerCell) {
+					centerCell.addAdj(cell);
 				}
 			}
 		}
@@ -290,6 +297,41 @@ public class Board {
 
 		BoardCell destination = grid[row][col];
 		return isWalkway(destination) ? destination : null;
+	}
+
+	private BoardCell getDoorwayRoomCenter(BoardCell doorway) {
+		int row = doorway.getRow();
+		int col = doorway.getCol();
+
+		switch (doorway.getDoorDirection()) {
+		case UP:
+			row--;
+			break;
+		case DOWN:
+			row++;
+			break;
+		case LEFT:
+			col--;
+			break;
+		case RIGHT:
+			col++;
+			break;
+		case NONE:
+		default:
+			return null;
+		}
+
+		if (!isInBounds(row, col)) {
+			return null;
+		}
+
+		BoardCell roomCell = grid[row][col];
+		Room room = roomMap.get(roomCell.getInitial());
+		if (room == null) {
+			return null;
+		}
+
+		return room.getCenterCell();
 	}
 
 	private BoardCell getSecretPassageDestination(BoardCell centerCell) {
@@ -345,7 +387,7 @@ public class Board {
 			if (visited.contains(adjCell)) {
 				continue;
 			}
-			if (adjCell.isOccupied()) {
+			if (adjCell.isOccupied() && !adjCell.isRoomCenter()) {
 				continue;
 			}
 
