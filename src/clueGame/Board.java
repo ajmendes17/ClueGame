@@ -10,6 +10,8 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Board {
+	// added NEIGHBOR_OFFSETS as a helper during refactoring
+	private static final int[][] NEIGHBOR_OFFSETS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 
 	private BoardCell[][] grid;
 	private int numRows;
@@ -61,10 +63,10 @@ public class Board {
 	// load setup file
 	public void loadSetupConfig() throws BadConfigFormatException {
 		roomMap = new HashMap<>();
-
-		try {
-			Scanner scanner = new Scanner(new File(setupConfigFile));
-
+		
+		// Put the Scanner into the try statement so we can get rid 
+		// of so many repetitive scanner.close statements
+		try (Scanner scanner = new Scanner(new File(setupConfigFile))) {
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine().trim();
 
@@ -75,7 +77,6 @@ public class Board {
 				String[] parts = line.split(",\\s*");
 
 				if (parts.length != 3) {
-					scanner.close();
 					throw new BadConfigFormatException("Bad setup line format: " + line);
 				}
 
@@ -84,14 +85,11 @@ public class Board {
 				char initial = parts[2].charAt(0);
 
 				if (!type.equals("Room") && !type.equals("Space")) {
-					scanner.close();
 					throw new BadConfigFormatException("Bad room type: " + line);
 				}
 
 				roomMap.put(initial, new Room(name));
 			}
-
-			scanner.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Setup file not found: " + setupConfigFile);
 		}
@@ -104,9 +102,7 @@ public class Board {
 		numRows = 0;
 		numColumns = 0;
 
-		try {
-			Scanner scanner = new Scanner(new File(layoutConfigFile));
-
+		try (Scanner scanner = new Scanner(new File(layoutConfigFile))) {
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine().trim();
 				if (line.isEmpty()) {
@@ -116,14 +112,11 @@ public class Board {
 				String[] parts = line.split(",");
 
 				if (!lines.isEmpty() && parts.length != lines.get(0).length) {
-					scanner.close();
 					throw new BadConfigFormatException("Inconsistent number of columns");
 				}
 
 				lines.add(parts);
 			}
-
-			scanner.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Layout file not found: " + layoutConfigFile);
 			return;
@@ -210,13 +203,11 @@ public class Board {
 	}
 
 	private void addWalkwayAdjacencies(BoardCell cell) {
-		int row = cell.getRow();
-		int col = cell.getCol();
-
-		addWalkwayOrDoorAdjacency(cell, row - 1, col);
-		addWalkwayOrDoorAdjacency(cell, row + 1, col);
-		addWalkwayOrDoorAdjacency(cell, row, col - 1);
-		addWalkwayOrDoorAdjacency(cell, row, col + 1);
+		
+		// Got rid of all the addWalkwayOrDoorAdjacency calls
+		for (int[] offset : NEIGHBOR_OFFSETS) {
+			addWalkwayOrDoorAdjacency(cell, cell.getRow() + offset[0], cell.getCol() + offset[1]);
+		}
 
 		if (cell.isDoorway()) {
 			BoardCell roomCenter = getDoorwayRoomCenter(cell);
@@ -246,8 +237,6 @@ public class Board {
 	}
 
 	private void addRoomCenterAdjacencies(BoardCell centerCell) {
-		char roomInitial = centerCell.getInitial();
-
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
 				BoardCell cell = grid[row][col];
@@ -262,76 +251,62 @@ public class Board {
 				}
 			}
 		}
-
+		
 		BoardCell secretPassageDestination = getSecretPassageDestination(centerCell);
 		if (secretPassageDestination != null) {
 			centerCell.addAdj(secretPassageDestination);
 		}
 	}
-
+	
+	// New stepFromDoorway logic got rid of all the case break situations
 	private BoardCell getDoorwayDestination(BoardCell doorway) {
-		int row = doorway.getRow();
-		int col = doorway.getCol();
-
-		switch (doorway.getDoorDirection()) {
-		case UP:
-			row--;
-			break;
-		case DOWN:
-			row++;
-			break;
-		case LEFT:
-			col--;
-			break;
-		case RIGHT:
-			col++;
-			break;
-		case NONE:
-		default:
+		int[] location = stepFromDoorway(doorway);
+		if (location == null) {
 			return null;
 		}
 
-		if (!isInBounds(row, col)) {
+		if (!isInBounds(location[0], location[1])) {
 			return null;
 		}
 
-		BoardCell destination = grid[row][col];
+		BoardCell destination = grid[location[0]][location[1]];
 		return isWalkway(destination) ? destination : null;
 	}
-
+	
+	// Better formatting and built up methods for getDoorwayRoomCenter
 	private BoardCell getDoorwayRoomCenter(BoardCell doorway) {
-		int row = doorway.getRow();
-		int col = doorway.getCol();
-
-		switch (doorway.getDoorDirection()) {
-		case UP:
-			row--;
-			break;
-		case DOWN:
-			row++;
-			break;
-		case LEFT:
-			col--;
-			break;
-		case RIGHT:
-			col++;
-			break;
-		case NONE:
-		default:
+		int[] location = stepFromDoorway(doorway);
+		if (location == null || !isInBounds(location[0], location[1])) {
 			return null;
 		}
 
-		if (!isInBounds(row, col)) {
-			return null;
-		}
-
-		BoardCell roomCell = grid[row][col];
+		BoardCell roomCell = grid[location[0]][location[1]];
 		Room room = roomMap.get(roomCell.getInitial());
 		if (room == null) {
 			return null;
 		}
 
 		return room.getCenterCell();
+	}
+
+	private int[] stepFromDoorway(BoardCell doorway) {
+		int row = doorway.getRow();
+		int col = doorway.getCol();
+
+		// got rid of all the row +-; break; clauses
+		switch (doorway.getDoorDirection()) {
+		case UP:
+			return new int[] {row - 1, col};
+		case DOWN:
+			return new int[] {row + 1, col};
+		case LEFT:
+			return new int[] {row, col - 1};
+		case RIGHT:
+			return new int[] {row, col + 1};
+		case NONE:
+		default:
+			return null;
+		}
 	}
 
 	private BoardCell getSecretPassageDestination(BoardCell centerCell) {
