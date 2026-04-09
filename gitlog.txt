@@ -1,3 +1,9 @@
+commit 2c406c9ee147391571bd77cd713bcaf8f32f3391
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Thu Apr 9 12:49:41 2026 -0600
+
+    Refactored repeating logic for cases
+
 commit b0d738a6c53d0553776760ecdc7f5a89c5ce97e0
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Thu Apr 9 10:14:38 2026 -0600

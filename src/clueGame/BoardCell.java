@@ -4,31 +4,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BoardCell {
-	private int row;
-	private int col;
+	private final int row;
+	private final int col;
+
 	private char initial;
 	private DoorDirection doorDirection;
-	private boolean roomLabel;
-	private boolean roomCenter;
+	private boolean labelCell;
+	private boolean centerCell;
 	private char secretPassage;
-	private Set<BoardCell> adjList;
-	
+	private final Set<BoardCell> adjacencies;
 	private boolean occupied;
-
-	public boolean isOccupied() {
-		return occupied;
-	}
-
-	public void setOccupied(boolean occupied) {
-		this.occupied = occupied;
-	}
 
 	public BoardCell(int row, int col) {
 		this.row = row;
 		this.col = col;
-		this.doorDirection = DoorDirection.NONE;
-		this.secretPassage = ' ';
-		this.adjList = new HashSet<>();
+		doorDirection = DoorDirection.NONE;
+		secretPassage = ' ';
+		adjacencies = new HashSet<>();
 	}
 
 	public int getRow() {
@@ -60,19 +52,19 @@ public class BoardCell {
 	}
 
 	public boolean isLabel() {
-		return roomLabel;
+		return labelCell;
 	}
 
 	public void setRoomLabel(boolean roomLabel) {
-		this.roomLabel = roomLabel;
+		labelCell = roomLabel;
 	}
 
 	public boolean isRoomCenter() {
-		return roomCenter;
+		return centerCell;
 	}
 
 	public void setRoomCenter(boolean roomCenter) {
-		this.roomCenter = roomCenter;
+		centerCell = roomCenter;
 	}
 
 	public char getSecretPassage() {
@@ -83,11 +75,27 @@ public class BoardCell {
 		this.secretPassage = secretPassage;
 	}
 
+	public boolean isOccupied() {
+		return occupied;
+	}
+
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
+	}
+
+	public void addAdjacency(BoardCell cell) {
+		adjacencies.add(cell);
+	}
+
 	public void addAdj(BoardCell cell) {
-		adjList.add(cell);
+		addAdjacency(cell);
+	}
+
+	public void clearAdjacencies() {
+		adjacencies.clear();
 	}
 
 	public Set<BoardCell> getAdjList() {
-		return adjList;
+		return adjacencies;
 	}
 }

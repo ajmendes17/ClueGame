@@ -187,7 +187,7 @@ public class Board {
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
 				BoardCell cell = grid[row][col];
-				cell.getAdjList().clear();
+				cell.clearAdjacencies();
 
 				if (isUnused(cell)) {
 					continue;
