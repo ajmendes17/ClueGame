@@ -1,3 +1,57 @@
+commit b0d738a6c53d0553776760ecdc7f5a89c5ce97e0
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Thu Apr 9 10:14:38 2026 -0600
+
+    README.md to .txt, updated information
+
+commit 33048a97cbb466f1baa7916e8d8c9700050cdd64
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Thu Apr 9 10:11:11 2026 -0600
+
+    Refactoring (mostly in Board.java), all tests still passing
+
+commit e4a74e2903fa43f56fe7c94d3a5e504cf9719087
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 6 20:08:28 2026 -0600
+
+    Passing Tests for custom test suite
+
+commit 1236d947e529b298db53925ba8307bfa7bc56c73
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 6 18:27:56 2026 -0600
+
+    altered Board to better account for doorways and adjacencies
+
+commit d1ae8efca8fcb2d898ea6bd003d3bde14c7395b0
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 6 18:10:39 2026 -0600
+
+    Initial custom tests
+
+commit 84786ab87e56d2cf50c2c4a555cf8dea14a5ed19
+Author: Jake DiVito <divitojacob@gmail.com>
+Date:   Mon Apr 6 10:10:41 2026 -0600
+
+    Remove old BoardAdjTargetTest
+
+commit d58e4fcad1535e77eef6c01f9ca14af238c5d20c
+Author: Jake DiVito <divitojacob@gmail.com>
+Date:   Thu Apr 2 13:23:10 2026 -0600
+
+    Added custom board adjacency tests
+
+commit 0574d051faf57552a439990b2bea0d9ae50ea0dd
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed Apr 1 13:40:19 2026 -0600
+
+    AdjTest files added
+
+commit 8cf4bab1097b2a95e9d56b9030981a901c5b6b11
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Mar 31 11:37:45 2026 -0600
+
+    updating gitlog for LO13A
+
 commit ef111c8d176a78b3a8ac3159a916346388d6dd3c
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Tue Mar 31 11:27:19 2026 -0600
