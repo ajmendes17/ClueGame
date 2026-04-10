@@ -23,8 +23,13 @@ Date:   Mon Apr 6 18:27:56 2026 -0600
 4. 
 commit d58e4fcad1535e77eef6c01f9ca14af238c5d20c
 Author: Jake DiVito <divitojacob@gmail.com>
-Date:   Thu Apr 2 13:23:10 2026 -0600
+Date:   Mon Apr 6 13:23:10 2026 -0600
 
     Refactored custom board adjacency tests
 
 5.
+commit 1bfd6b6ba08555740079774a669a2c366a420144
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Thu Apr 9 13:11:52 2026 -0600
+
+    refactored BoardCell naming and organization, readability/organization refactoring

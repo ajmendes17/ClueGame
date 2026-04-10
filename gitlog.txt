@@ -1,3 +1,9 @@
+commit 1bfd6b6ba08555740079774a669a2c366a420144
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Thu Apr 9 13:11:52 2026 -0600
+
+    refactored BoardCell naming and organization, readability/organization refactoring
+
 commit 2c406c9ee147391571bd77cd713bcaf8f32f3391
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Thu Apr 9 12:49:41 2026 -0600
