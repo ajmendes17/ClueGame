@@ -1,11 +1,15 @@
 package clueGame;
 
+import java.awt.Color;
+import java.util.Collections;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -21,6 +25,13 @@ public class Board {
 	private String setupConfigFile;
 
 	private Map<Character, Room> roomMap;
+	private Set<Character> roomInitials;
+	private ArrayList<Player> players;
+	private ArrayList<Card> deck;
+	private ArrayList<Card> weapons;
+	private Card solutionPerson;
+	private Card solutionRoom;
+	private Card solutionWeapon;
 
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
@@ -63,6 +74,10 @@ public class Board {
 	// load setup file
 	public void loadSetupConfig() throws BadConfigFormatException {
 		roomMap = new HashMap<>();
+		roomInitials = new HashSet<>();
+		players = new ArrayList<>();
+		deck = new ArrayList<>();
+		weapons = new ArrayList<>();
 		
 		// Put the Scanner into the try statement so we can get rid 
 		// of so many repetitive scanner.close statements
@@ -77,6 +92,14 @@ public class Board {
 				String[] parts = line.split(",\\s*");
 
 				if (parts.length != 3) {
+					if (isPlayerType(parts[0]) && parts.length == 5) {
+						addPlayer(parts);
+						continue;
+					}
+					if (parts[0].equals("Weapon") && parts.length == 2) {
+						addWeapon(parts[1]);
+						continue;
+					}
 					throw new BadConfigFormatException("Bad setup line format: " + line);
 				}
 
@@ -89,6 +112,9 @@ public class Board {
 				}
 
 				roomMap.put(initial, new Room(name));
+				if (type.equals("Room")) {
+					roomInitials.add(initial);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Setup file not found: " + setupConfigFile);
@@ -181,6 +207,7 @@ public class Board {
 		}
 
 		calcAdjacencies();
+		buildDeck();
 	}
 
 	public void calcAdjacencies() {
@@ -405,5 +432,138 @@ public class Board {
 
 	public Room getRoom(char initial) {
 		return roomMap.get(initial);
+	}
+
+	private boolean isPlayerType(String type) {
+		return type.equals("Human") || type.equals("Computer");
+	}
+
+	private void addWeapon(String weaponName) {
+		Card weaponCard = new Card(weaponName, CardType.WEAPON);
+		weapons.add(weaponCard);
+	}
+
+	private void addPlayer(String[] parts) throws BadConfigFormatException {
+		String type = parts[0];
+		String name = parts[1];
+		Color color = parseColor(parts[2]);
+		int row = parseCoordinate(parts[3], "row");
+		int column = parseCoordinate(parts[4], "column");
+
+		Player player;
+		if (type.equals("Human")) {
+			player = new HumanPlayer(name, color, row, column);
+		} else {
+			player = new ComputerPlayer(name, color, row, column);
+		}
+
+		players.add(player);
+	}
+
+	private Color parseColor(String colorName) throws BadConfigFormatException {
+		switch (colorName.trim().toLowerCase()) {
+		case "blue":
+			return Color.BLUE;
+		case "red":
+			return Color.RED;
+		case "green":
+			return Color.GREEN;
+		case "yellow":
+			return Color.YELLOW;
+		case "orange":
+			return Color.ORANGE;
+		case "pink":
+			return Color.PINK;
+		case "white":
+			return Color.WHITE;
+		case "black":
+			return Color.BLACK;
+		case "gray":
+			return Color.GRAY;
+		default:
+			throw new BadConfigFormatException("Unknown player color: " + colorName);
+		}
+	}
+
+	private int parseCoordinate(String value, String coordinateName) throws BadConfigFormatException {
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			throw new BadConfigFormatException("Bad " + coordinateName + " value: " + value);
+		}
+	}
+
+	public void buildDeck() {
+		deck.clear();
+
+		for (char initial : roomInitials) {
+			deck.add(new Card(roomMap.get(initial).getName(), CardType.ROOM));
+		}
+
+		deck.addAll(weapons);
+
+		for (Player player : players) {
+			deck.add(new Card(player.getName(), CardType.PERSON));
+		}
+	}
+
+	public void selectAnswer() {
+		solutionPerson = drawRandomCardOfType(CardType.PERSON);
+		solutionWeapon = drawRandomCardOfType(CardType.WEAPON);
+		solutionRoom = drawRandomCardOfType(CardType.ROOM);
+	}
+
+	private Card drawRandomCardOfType(CardType type) {
+		List<Card> matchingCards = new ArrayList<>();
+		for (Card card : deck) {
+			if (card.getType() == type) {
+				matchingCards.add(card);
+			}
+		}
+
+		if (matchingCards.isEmpty()) {
+			return null;
+		}
+
+		Card selected = matchingCards.get(new Random().nextInt(matchingCards.size()));
+		deck.remove(selected);
+		return selected;
+	}
+
+	public void dealCards() {
+		ArrayList<Card> cardsToDeal = new ArrayList<>(deck);
+		Collections.shuffle(cardsToDeal);
+
+		for (Player player : players) {
+			player.getHand().clear();
+		}
+
+		for (int i = 0; i < cardsToDeal.size(); i++) {
+			players.get(i % players.size()).addCard(cardsToDeal.get(i));
+		}
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public ArrayList<Card> getWeapons() {
+		return weapons;
+	}
+
+	public ArrayList<Card> getDeck() {
+		return deck;
+	}
+
+	public Card getSolutionPerson() {
+		return solutionPerson;
+	}
+
+	public Card getSolutionRoom() {
+		return solutionRoom;
+	}
+
+	public Card getSolutionWeapon() {
+		return solutionWeapon;
 	}
 }
