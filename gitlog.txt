@@ -1,3 +1,27 @@
+commit 7a0f6ecff53bcb9abdca3478ae71fc42d1730f7e
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri Apr 10 17:29:46 2026 -0600
+
+    All tests passing, fixed ClueSetup, fixed the rest of GameSetupTests
+
+commit b9f53dfc07a73fe27f740c1d1295b1037a90c0a9
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri Apr 10 17:13:54 2026 -0600
+
+    Built up Board.java with cards, color, weapons, solutions, etc
+
+commit fc733d53ffe6ba2fbc3d354ec7eb9cc03e64495a
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri Apr 10 16:42:47 2026 -0600
+
+    GameSetup created and made format for tests
+
+commit e07187622e835a859331b8ca1a18a39ae52bca78
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri Apr 10 06:00:36 2026 -0600
+
+    Create core types of new files, just light scaffolding and we can build it up from there
+
 commit 1bfd6b6ba08555740079774a669a2c366a420144
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Thu Apr 9 13:11:52 2026 -0600
