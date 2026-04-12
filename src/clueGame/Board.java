@@ -574,6 +574,8 @@ public class Board {
 	}
 
 	public boolean checkAccusation(Solution accusation) {
-		return false;
+		return solutionPerson.equals(accusation.getPerson())
+				&& solutionWeapon.equals(accusation.getWeapon())
+				&& solutionRoom.equals(accusation.getRoom());
 	}
 }

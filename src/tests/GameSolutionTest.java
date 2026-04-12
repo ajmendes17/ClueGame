@@ -1,7 +1,7 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import clueGame.Board;
 import clueGame.Card;
 import clueGame.CardType;
+import clueGame.HumanPlayer;
+import clueGame.Player;
 import clueGame.Solution;
 
 public class GameSolutionTest {
@@ -70,5 +72,56 @@ public class GameSolutionTest {
 	public void testCheckAccusationWrongRoom() {
 		board.setAnswer(new Solution(ajCard, candlestickCard, moonRoomCard));
 		assertFalse(board.checkAccusation(new Solution(ajCard, candlestickCard, tvRoomCard)));
+	}
+
+	// Check that a player returns the only matching card that can disprove a suggestion.
+	@Test
+	public void testDisproveSuggestionSingleMatch() {
+		Player player = new HumanPlayer("AJ Mendes", java.awt.Color.BLUE, 0, 0);
+		player.updateHand(ropeCard);
+		player.updateHand(tvRoomCard);
+		player.updateHand(ajCard);
+
+		Card disproved = player.disproveSuggestion(new Solution(johnCard, ropeCard, moonRoomCard));
+		assertEquals(ropeCard, disproved);
+	}
+
+	// Check that a player returns null if no cards can disprove the suggestion.
+	@Test
+	public void testDisproveSuggestionNoMatch() {
+		Player player = new HumanPlayer("AJ Mendes", java.awt.Color.BLUE, 0, 0);
+		player.updateHand(ropeCard);
+		player.updateHand(tvRoomCard);
+		player.updateHand(ajCard);
+
+		Card disproved = player.disproveSuggestion(new Solution(johnCard, candlestickCard, moonRoomCard));
+		assertEquals(null, disproved);
+	}
+
+	// Check that a player randomly returns one of the matching cards when more than one can disprove.
+	@Test
+	public void testDisproveSuggestionMultipleMatches() {
+		Player player = new HumanPlayer("AJ Mendes", java.awt.Color.BLUE, 0, 0);
+		player.updateHand(ropeCard);
+		player.updateHand(moonRoomCard);
+		player.updateHand(ajCard);
+
+		boolean sawWeapon = false;
+		boolean sawRoom = false;
+
+		for (int i = 0; i < 50; i++) {
+			Card disproved = player.disproveSuggestion(new Solution(johnCard, ropeCard, moonRoomCard));
+			assertNotNull(disproved);
+			assertTrue(disproved.equals(ropeCard) || disproved.equals(moonRoomCard));
+			if (disproved.equals(ropeCard)) {
+				sawWeapon = true;
+			}
+			if (disproved.equals(moonRoomCard)) {
+				sawRoom = true;
+			}
+		}
+
+		assertTrue(sawWeapon);
+		assertTrue(sawRoom);
 	}
 }
