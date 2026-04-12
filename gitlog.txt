@@ -1,3 +1,15 @@
+commit 1941112548e0e5b9d6eb02b3b8d37c96c6c7ce98
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Sun Apr 12 14:52:11 2026 -0600
+
+    Added weapons and player to 306and fixed weapons in both setup files
+
+commit e87a87a9ed0aa69a3e12ca3dc20ce60a531e049b
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Sat Apr 11 15:43:49 2026 -0600
+
+    All tests pass
+
 commit 7a0f6ecff53bcb9abdca3478ae71fc42d1730f7e
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Fri Apr 10 17:29:46 2026 -0600
