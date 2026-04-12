@@ -16,8 +16,8 @@ Weapon, Candlestick
 Weapon, Rope
 Weapon, Wrench
 Weapon, Laptop
-Weapon, Textbook
-Weapon, Coffee Mug
+Weapon, Dagger
+Weapon, Revolver
 // Players
 Human, AJ Mendes, blue, 5, 0
 Computer, Jake DiVito, black, 0, 7
