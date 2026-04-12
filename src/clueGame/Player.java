@@ -10,6 +10,7 @@ public abstract class Player {
 	private int row;
 	private int column;
 	private Set<Card> hand;
+	private Set<Card> seenCards;
 
 	protected Player(String name, Color color, int row, int column) {
 		this.name = name;
@@ -17,6 +18,7 @@ public abstract class Player {
 		this.row = row;
 		this.column = column;
 		hand = new HashSet<>();
+		seenCards = new HashSet<>();
 	}
 
 	public String getName() {
@@ -59,7 +61,24 @@ public abstract class Player {
 		this.hand = hand;
 	}
 
+	public Set<Card> getSeenCards() {
+		return seenCards;
+	}
+
+	public void setSeenCards(Set<Card> seenCards) {
+		this.seenCards = seenCards;
+	}
+
 	public void addCard(Card card) {
 		hand.add(card);
+	}
+
+	public void updateHand(Card card) {
+		hand.add(card);
+		seenCards.add(card);
+	}
+
+	public void addSeenCard(Card card) {
+		seenCards.add(card);
 	}
 }

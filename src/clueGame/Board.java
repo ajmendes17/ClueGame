@@ -566,4 +566,14 @@ public class Board {
 	public Card getSolutionWeapon() {
 		return solutionWeapon;
 	}
+
+	public void setAnswer(Solution answer) {
+		solutionPerson = answer.getPerson();
+		solutionWeapon = answer.getWeapon();
+		solutionRoom = answer.getRoom();
+	}
+
+	public boolean checkAccusation(Solution accusation) {
+		return false;
+	}
 }
