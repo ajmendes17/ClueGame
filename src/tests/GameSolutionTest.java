@@ -3,6 +3,9 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import clueGame.Board;
 import clueGame.Card;
 import clueGame.CardType;
+import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
@@ -123,5 +127,76 @@ public class GameSolutionTest {
 
 		assertTrue(sawWeapon);
 		assertTrue(sawRoom);
+	}
+
+	// Check that a suggestion returns null when no player can disprove it.
+	@Test
+	public void testHandleSuggestionNoDisproof() {
+		Player human = new HumanPlayer("AJ Mendes", Color.BLUE, 0, 0);
+		Player computerOne = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 1);
+		Player computerTwo = new ComputerPlayer("John Cena", Color.GREEN, 0, 2);
+		computerOne.updateHand(tvRoomCard);
+		computerTwo.updateHand(laptopCard);
+
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(human);
+		players.add(computerOne);
+		players.add(computerTwo);
+		board.setPlayers(players);
+
+		assertNull(board.handleSuggestion(new Solution(ajCard, candlestickCard, moonRoomCard), human));
+	}
+
+	// Check that a suggestion returns null when only the accuser can disprove it.
+	@Test
+	public void testHandleSuggestionOnlyAccuserCanDisprove() {
+		Player human = new HumanPlayer("AJ Mendes", Color.BLUE, 0, 0);
+		Player computerOne = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 1);
+		Player computerTwo = new ComputerPlayer("John Cena", Color.GREEN, 0, 2);
+		human.updateHand(candlestickCard);
+
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(human);
+		players.add(computerOne);
+		players.add(computerTwo);
+		board.setPlayers(players);
+
+		assertNull(board.handleSuggestion(new Solution(jakeCard, candlestickCard, moonRoomCard), human));
+	}
+
+	// Check that the human player can disprove a suggestion when no one earlier can.
+	@Test
+	public void testHandleSuggestionHumanDisproves() {
+		Player human = new HumanPlayer("AJ Mendes", Color.BLUE, 0, 0);
+		Player computerOne = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 1);
+		Player computerTwo = new ComputerPlayer("John Cena", Color.GREEN, 0, 2);
+		human.updateHand(moonRoomCard);
+
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(human);
+		players.add(computerOne);
+		players.add(computerTwo);
+		board.setPlayers(players);
+
+		assertEquals(moonRoomCard,
+				board.handleSuggestion(new Solution(jakeCard, candlestickCard, moonRoomCard), computerTwo));
+	}
+
+	// Check that the first player in order after the accuser is the one who disproves.
+	@Test
+	public void testHandleSuggestionStopsAtFirstDisprover() {
+		Player human = new HumanPlayer("AJ Mendes", Color.BLUE, 0, 0);
+		Player computerOne = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 1);
+		Player computerTwo = new ComputerPlayer("John Cena", Color.GREEN, 0, 2);
+		computerOne.updateHand(ropeCard);
+		computerTwo.updateHand(ropeCard);
+
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(human);
+		players.add(computerOne);
+		players.add(computerTwo);
+		board.setPlayers(players);
+
+		assertEquals(ropeCard, board.handleSuggestion(new Solution(ajCard, ropeCard, moonRoomCard), human));
 	}
 }

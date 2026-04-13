@@ -84,7 +84,7 @@ public class GameSetupTests {
 	public void testLoadWeaponsFromConfig() {
 		assertEquals(6, board.getWeapons().size());
 		assertEquals(new Card("Candlestick", CardType.WEAPON), board.getWeapons().get(0));
-		assertEquals(new Card("Coffee Mug", CardType.WEAPON), board.getWeapons().get(5));
+		assertEquals(new Card("Revolver", CardType.WEAPON), board.getWeapons().get(5));
 	}
 
 	// Check that the correct number and types of players are created.

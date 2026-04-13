@@ -578,4 +578,29 @@ public class Board {
 				&& solutionWeapon.equals(accusation.getWeapon())
 				&& solutionRoom.equals(accusation.getRoom());
 	}
+
+	public Card handleSuggestion(Solution suggestion, Player accuser) {
+		if (players == null || players.isEmpty()) {
+			return null;
+		}
+
+		int accuserIndex = players.indexOf(accuser);
+		if (accuserIndex == -1) {
+			return null;
+		}
+
+		for (int offset = 1; offset < players.size(); offset++) {
+			Player currentPlayer = players.get((accuserIndex + offset) % players.size());
+			Card disprovedCard = currentPlayer.disproveSuggestion(suggestion);
+			if (disprovedCard != null) {
+				return disprovedCard;
+			}
+		}
+
+		return null;
+	}
+
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
+	}
 }

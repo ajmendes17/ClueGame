@@ -15,7 +15,7 @@ Space, Unused Area, X
 Weapon, Candlestick
 Weapon, Rope
 Weapon, Wrench
-Weapon, Laptop
+Weapon, Lead Pipe
 Weapon, Dagger
 Weapon, Revolver
 // Players
