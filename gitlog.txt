@@ -1,3 +1,33 @@
+commit 5f754b10bb41dc6debc98f6c5a57faf58d2c6aca
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 13 18:03:34 2026 -0600
+
+    Passing tests, built out ComputerAITest, all tests passing
+
+commit 5e035175931a6854e870d0eacf056fc089a514cc
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 13 17:50:53 2026 -0600
+
+    covered handleSuggestion, createSuggestion, and necessary adjustments to the code. Still need to test
+
+commit 831a79513ceab43f4d4e890568237b938e37ff8a
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Sun Apr 12 15:58:28 2026 -0600
+
+    Added disproveSolution to Player, necessary tests to GameSolutionTest, and implementation in Player.java. Also built out the cody for checkAccusation in Board.java
+
+commit cdad0e9527d3c10b5d003549490628110ed13287
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Sun Apr 12 15:47:25 2026 -0600
+
+    Base implementation for accussations, extended player, all tests failing (intentionally)
+
+commit 8aa77452e3702c993a51b18608f2721aff2552b7
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Sun Apr 12 15:39:34 2026 -0600
+
+    Framework for new tests and solution
+
 commit 1941112548e0e5b9d6eb02b3b8d37c96c6c7ce98
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Sun Apr 12 14:52:11 2026 -0600

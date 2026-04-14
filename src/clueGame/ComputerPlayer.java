@@ -14,11 +14,12 @@ public class ComputerPlayer extends Player {
 		super(name, color, row, column);
 	}
 
-	public Solution createSuggestion(Card roomCard) {
+	public Solution createSuggestion() {
 		List<Card> unseenPeople = new ArrayList<>();
 		List<Card> unseenWeapons = new ArrayList<>();
 
 		Board board = Board.getInstance();
+		Card roomCard = new Card(board.getRoom(board.getCell(getRow(), getColumn())).getName(), CardType.ROOM);
 
 		for (Player player : board.getPlayers()) {
 			Card personCard = new Card(player.getName(), CardType.PERSON);

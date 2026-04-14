@@ -59,15 +59,15 @@ public class ComputerAITest {
 	// Check that the room in a computer suggestion matches the room entered.
 	@Test
 	public void testCreateSuggestionMatchesRoom() {
-		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
-		Solution suggestion = player.createSuggestion(moonRoomCard);
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 2, 3);
+		Solution suggestion = player.createSuggestion();
 		assertEquals(moonRoomCard, suggestion.getRoom());
 	}
 
 	// Check that the only unseen person and weapon are selected when just one remains of each.
 	@Test
 	public void testCreateSuggestionSingleUnseenChoices() {
-		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 5, 14);
 		player.addSeenCard(ajCard);
 		player.addSeenCard(jakeCard);
 		player.addSeenCard(new Card("Danny Devito", CardType.PERSON));
@@ -80,7 +80,7 @@ public class ComputerAITest {
 		player.addSeenCard(leadPipeCard);
 		player.addSeenCard(daggerCard);
 
-		Solution suggestion = player.createSuggestion(appleTreeCard);
+		Solution suggestion = player.createSuggestion();
 		assertEquals(johnCard, suggestion.getPerson());
 		assertEquals(revolverCard, suggestion.getWeapon());
 		assertEquals(appleTreeCard, suggestion.getRoom());
@@ -89,7 +89,7 @@ public class ComputerAITest {
 	// Check that unseen people and weapons are chosen randomly when multiple options remain.
 	@Test
 	public void testCreateSuggestionMultipleUnseenChoices() {
-		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 1, 25);
 		player.addSeenCard(ajCard);
 		player.addSeenCard(candlestickCard);
 
@@ -99,7 +99,7 @@ public class ComputerAITest {
 		boolean sawLeadPipe = false;
 
 		for (int i = 0; i < 100; i++) {
-			Solution suggestion = player.createSuggestion(tvRoomCard);
+			Solution suggestion = player.createSuggestion();
 			assertEquals(tvRoomCard, suggestion.getRoom());
 			if (suggestion.getPerson().equals(jakeCard)) {
 				sawJake = true;
@@ -119,6 +119,14 @@ public class ComputerAITest {
 		assertTrue(sawJohn);
 		assertTrue(sawRope);
 		assertTrue(sawLeadPipe);
+	}
+
+	// Check that the suggested room always comes from the computer player's current location.
+	@Test
+	public void testCreateSuggestionUsesCurrentLocationRoom() {
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 22, 25);
+		Solution suggestion = player.createSuggestion();
+		assertEquals(new Card("Yellow Room", CardType.ROOM), suggestion.getRoom());
 	}
 
 	// Check that a computer player selects randomly when no room targets are available.
