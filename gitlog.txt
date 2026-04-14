@@ -1,3 +1,21 @@
+commit d0297683be1a1260c27cd2c4df4f528b6d57ce9a
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Apr 14 14:43:07 2026 -0600
+
+    Added all the buttons, main function, and then shifted the buttons around a little to be more what I wanted
+
+commit cd42c58dbd66a5390f1208c29a13aa55d6777ca9
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Apr 14 14:35:29 2026 -0600
+
+    Added frame layout and setters
+
+commit 4cd7315d6e11b068959d24134e6becf509c17626
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Apr 14 14:30:48 2026 -0600
+
+    Base format for GameControlPanel and how that's going to look
+
 commit 8078418e21df3d7e8bdae6ec6c037ad45b782638
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Mon Apr 13 18:19:03 2026 -0600
