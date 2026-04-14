@@ -4,12 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
+import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.ComputerPlayer;
@@ -116,5 +119,74 @@ public class ComputerAITest {
 		assertTrue(sawJohn);
 		assertTrue(sawRope);
 		assertTrue(sawLeadPipe);
+	}
+
+	// Check that a computer player selects randomly when no room targets are available.
+	@Test
+	public void testSelectTargetRandomWhenNoRoomTargets() {
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
+		Set<BoardCell> targets = new HashSet<>();
+		BoardCell walkwayOne = board.getCell(3, 7);
+		BoardCell walkwayTwo = board.getCell(3, 8);
+		targets.add(walkwayOne);
+		targets.add(walkwayTwo);
+
+		boolean sawFirstWalkway = false;
+		boolean sawSecondWalkway = false;
+
+		for (int i = 0; i < 100; i++) {
+			BoardCell selected = player.selectTarget(targets);
+			if (selected == walkwayOne) {
+				sawFirstWalkway = true;
+			}
+			if (selected == walkwayTwo) {
+				sawSecondWalkway = true;
+			}
+		}
+
+		assertTrue(sawFirstWalkway);
+		assertTrue(sawSecondWalkway);
+	}
+
+	// Check that an unseen room target is selected over walkway targets.
+	@Test
+	public void testSelectTargetUnseenRoomChosen() {
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
+		Set<BoardCell> targets = new HashSet<>();
+		BoardCell walkway = board.getCell(3, 8);
+		BoardCell roomCenter = board.getCell(2, 3);
+		targets.add(walkway);
+		targets.add(roomCenter);
+
+		assertEquals(roomCenter, player.selectTarget(targets));
+	}
+
+	// Check that a seen room target is treated like any other random target.
+	@Test
+	public void testSelectTargetSeenRoomRandom() {
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
+		player.addSeenCard(moonRoomCard);
+
+		Set<BoardCell> targets = new HashSet<>();
+		BoardCell walkway = board.getCell(3, 8);
+		BoardCell roomCenter = board.getCell(2, 3);
+		targets.add(walkway);
+		targets.add(roomCenter);
+
+		boolean sawWalkway = false;
+		boolean sawRoom = false;
+
+		for (int i = 0; i < 100; i++) {
+			BoardCell selected = player.selectTarget(targets);
+			if (selected == walkway) {
+				sawWalkway = true;
+			}
+			if (selected == roomCenter) {
+				sawRoom = true;
+			}
+		}
+
+		assertTrue(sawWalkway);
+		assertTrue(sawRoom);
 	}
 }
