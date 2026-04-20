@@ -88,6 +88,11 @@ public class KnownCardsPanel extends JPanel {
 		repaint();
 	}
 
+	public void updatePanels(Player humanPlayer, Map<Card, Player> seenCards) {
+		setHand(humanPlayer);
+		setSeenCards(seenCards);
+	}
+
 	private void configureSection(JPanel panel, String title) {
 		resetSection(panel, title);
 		panel.add(new JLabel(" "));
@@ -100,17 +105,24 @@ public class KnownCardsPanel extends JPanel {
 	}
 
 	private void addCardField(JPanel panel, Card card, Color background) {
+		addCardField(panel, card, background, card.getType().toString());
+	}
+
+	private void addCardField(JPanel panel, Card card, Color background, String tooltip) {
 		JTextField cardField = new JTextField(card.getCardName());
 		cardField.setEditable(false);
 		cardField.setBackground(background);
-		cardField.setToolTipText(card.getType().toString());
+		cardField.setForeground(getReadableTextColor(background));
+		cardField.setOpaque(true);
+		cardField.setToolTipText(tooltip);
 		panel.add(cardField);
 	}
 
 	private void addSeenCard(Card card, Player owner) {
 		Color background = owner == null ? Color.WHITE : owner.getColor();
 		JPanel panel = getPanelForCardType(card.getType());
-		addCardField(panel, card, background);
+		String tooltip = owner == null ? "Unknown holder" : "Shown by " + owner.getName();
+		addCardField(panel, card, background, tooltip);
 	}
 
 	private JPanel getPanelForCardType(CardType type) {
@@ -127,5 +139,10 @@ public class KnownCardsPanel extends JPanel {
 		if (panel.getComponentCount() == 0) {
 			panel.add(new JLabel("None seen"));
 		}
+	}
+
+	private Color getReadableTextColor(Color background) {
+		int brightness = background.getRed() + background.getGreen() + background.getBlue();
+		return brightness < 380 ? Color.WHITE : Color.BLACK;
 	}
 }
