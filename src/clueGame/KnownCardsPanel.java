@@ -1,13 +1,16 @@
 package clueGame;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -119,7 +122,7 @@ public class KnownCardsPanel extends JPanel {
 	}
 
 	private void addSeenCard(Card card, Player owner) {
-		Color background = owner == null ? Color.WHITE : owner.getColor();
+		Color background = owner == null ? Color.WHITE : getHighlightColor(owner.getColor());
 		JPanel panel = getPanelForCardType(card.getType());
 		String tooltip = owner == null ? "Unknown holder" : "Shown by " + owner.getName();
 		addCardField(panel, card, background, tooltip);
@@ -144,5 +147,56 @@ public class KnownCardsPanel extends JPanel {
 	private Color getReadableTextColor(Color background) {
 		int brightness = background.getRed() + background.getGreen() + background.getBlue();
 		return brightness < 380 ? Color.WHITE : Color.BLACK;
+	}
+
+	private Color getHighlightColor(Color playerColor) {
+		int red = blendWithWhite(playerColor.getRed());
+		int green = blendWithWhite(playerColor.getGreen());
+		int blue = blendWithWhite(playerColor.getBlue());
+		return new Color(red, green, blue);
+	}
+
+	private int blendWithWhite(int colorValue) {
+		return (int) (colorValue * 0.25 + 255 * 0.75);
+	}
+
+	public static void main(String[] args) {
+		KnownCardsPanel panel = new KnownCardsPanel();
+
+		HumanPlayer human = new HumanPlayer("AJ Mendes", Color.BLUE, 0, 0);
+		human.updateHand(new Card("Moon Room", CardType.ROOM));
+		human.updateHand(new Card("Candlestick", CardType.WEAPON));
+		human.updateHand(new Card("AJ Mendes", CardType.PERSON));
+		human.updateHand(new Card("Dagger", CardType.WEAPON));
+
+		Player mustard = new ComputerPlayer("Col. Mustard", Color.ORANGE, 0, 0);
+		Player peacock = new ComputerPlayer("Mrs. Peacock", Color.CYAN, 0, 0);
+		Player scarlet = new ComputerPlayer("Miss Scarlet", Color.RED, 0, 0);
+		Player plum = new ComputerPlayer("Professor Plum", Color.MAGENTA, 0, 0);
+		Player green = new ComputerPlayer("Mr. Green", Color.GREEN, 0, 0);
+
+		Map<Card, Player> seenCards = new HashMap<>();
+		seenCards.put(new Card("Rope", CardType.WEAPON), mustard);
+		seenCards.put(new Card("Wrench", CardType.WEAPON), peacock);
+		seenCards.put(new Card("Lead Pipe", CardType.WEAPON), plum);
+		seenCards.put(new Card("Revolver", CardType.WEAPON), scarlet);
+		seenCards.put(new Card("Danny DeVito", CardType.PERSON), scarlet);
+		seenCards.put(new Card("Colonel Mustard", CardType.PERSON), mustard);
+		seenCards.put(new Card("Mrs. Peacock", CardType.PERSON), peacock);
+		seenCards.put(new Card("Professor Plum", CardType.PERSON), plum);
+		seenCards.put(new Card("Mr. Green", CardType.PERSON), green);
+		seenCards.put(new Card("Movie Theater", CardType.ROOM), mustard);
+		seenCards.put(new Card("Library", CardType.ROOM), peacock);
+		seenCards.put(new Card("Kitchen", CardType.ROOM), scarlet);
+		seenCards.put(new Card("Conservatory", CardType.ROOM), plum);
+		seenCards.put(new Card("Ballroom", CardType.ROOM), green);
+
+		panel.updatePanels(human, seenCards);
+
+		JFrame frame = new JFrame("Known Cards Panel");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(300, 600);
+		frame.add(panel, BorderLayout.CENTER);
+		frame.setVisible(true);
 	}
 }
