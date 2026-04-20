@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -64,6 +65,29 @@ public class KnownCardsPanel extends JPanel {
 		handPanel.repaint();
 	}
 
+	public void setSeenCards(Map<Card, Player> seenCards) {
+		resetSection(peoplePanel, "People");
+		resetSection(roomsPanel, "Rooms");
+		resetSection(weaponsPanel, "Weapons");
+
+		if (seenCards != null && !seenCards.isEmpty()) {
+			List<Card> sortedCards = new ArrayList<>(seenCards.keySet());
+			sortedCards.sort(Comparator.comparing(Card::getType).thenComparing(Card::getCardName));
+
+			for (Card card : sortedCards) {
+				Player owner = seenCards.get(card);
+				addSeenCard(card, owner);
+			}
+		}
+
+		addEmptyMessageIfNeeded(peoplePanel);
+		addEmptyMessageIfNeeded(roomsPanel);
+		addEmptyMessageIfNeeded(weaponsPanel);
+
+		revalidate();
+		repaint();
+	}
+
 	private void configureSection(JPanel panel, String title) {
 		resetSection(panel, title);
 		panel.add(new JLabel(" "));
@@ -81,5 +105,27 @@ public class KnownCardsPanel extends JPanel {
 		cardField.setBackground(background);
 		cardField.setToolTipText(card.getType().toString());
 		panel.add(cardField);
+	}
+
+	private void addSeenCard(Card card, Player owner) {
+		Color background = owner == null ? Color.WHITE : owner.getColor();
+		JPanel panel = getPanelForCardType(card.getType());
+		addCardField(panel, card, background);
+	}
+
+	private JPanel getPanelForCardType(CardType type) {
+		if (type == CardType.PERSON) {
+			return peoplePanel;
+		}
+		if (type == CardType.ROOM) {
+			return roomsPanel;
+		}
+		return weaponsPanel;
+	}
+
+	private void addEmptyMessageIfNeeded(JPanel panel) {
+		if (panel.getComponentCount() == 0) {
+			panel.add(new JLabel("None seen"));
+		}
 	}
 }
