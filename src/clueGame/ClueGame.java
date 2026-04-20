@@ -1,7 +1,8 @@
 package clueGame;
 
 import java.awt.BorderLayout;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -45,7 +46,28 @@ public class ClueGame extends JFrame {
 		controlPanel.setTurn(firstPlayer, 0);
 		controlPanel.setGuess("No guess yet");
 		controlPanel.setGuessResult("No result yet");
-		knownCardsPanel.updatePanels(getHumanPlayer(), new HashMap<Card, Player>());
+		knownCardsPanel.updatePanels(getHumanPlayer(), buildDemoSeenCards());
+	}
+
+	private Map<Card, Player> buildDemoSeenCards() {
+		Map<Card, Player> seenCards = new LinkedHashMap<>();
+
+		for (Player player : board.getPlayers()) {
+			if (player instanceof HumanPlayer) {
+				continue;
+			}
+
+			addFirstCardFromPlayer(seenCards, player);
+		}
+
+		return seenCards;
+	}
+
+	private void addFirstCardFromPlayer(Map<Card, Player> seenCards, Player player) {
+		for (Card card : player.getHand()) {
+			seenCards.put(card, player);
+			return;
+		}
 	}
 
 	private Player getFirstPlayer() {
