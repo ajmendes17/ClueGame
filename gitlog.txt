@@ -1,3 +1,45 @@
+commit 74a4f8c994c1a4f5d450c66469f9859a864e213a
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 12:42:44 2026 -0600
+
+    Added a bunch of cards to a testing main function to check visuals, also changed the highlights to be more transparent so that it is visually appealing.
+
+commit d4e16b921f14e6cf479e486c16b68c184d7613e4
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 12:30:40 2026 -0600
+
+    Added updatePanels so that the whole panel refreshes from one call. Also changed backgrounds to make it look cleaner using opaqueness and text color changes.
+
+commit 2e6d8e1138cdcf8489677355d4584448067f6250
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 12:18:50 2026 -0600
+
+    Rebuilds the people, rooms, and weapons sections, sorts cards by type and name
+
+commit 26f244c46638910f08c547126bd5cc027aaa65dc
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 12:16:44 2026 -0600
+
+    added a way to see the human player's hand
+
+commit 7c4bd91cc3ecd8a3591dbf795a959b8bdd0f6392
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Apr 14 15:13:52 2026 -0600
+
+    removed old files
+
+commit aba574e92e0018f0dd9b208e6ff710e88ebd0eb1
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Apr 14 15:13:04 2026 -0600
+
+    next steps are to display the cards and color/format where necessary
+
+commit 1f81ab537aaefa1b38d37777f6fa92edacb2f4d2
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Tue Apr 14 15:09:33 2026 -0600
+
+    Created class for known cards and instance variables for them
+
 commit d0297683be1a1260c27cd2c4df4f528b6d57ce9a
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Tue Apr 14 14:43:07 2026 -0600
