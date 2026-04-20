@@ -1,3 +1,51 @@
+commit 0a35b0682b521ab845251121682707b172586c23
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 17:18:24 2026 -0600
+
+    Changed the locations of the names for isolation quarters and swimming pool to actually fit in the squares - had to make swimming pool on two lines. Also changed the black center to not have gridsquares as well
+
+commit 2f2425515aeba57368371d63751f5cf4ffd90c9e
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 17:12:53 2026 -0600
+
+    Changed the boardcell so that there's no grid lines in the rooms
+
+commit 55d1f8ac1d4b8f69972c1c4dff8f4414136973b0
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 17:01:55 2026 -0600
+
+    Made useful frame populated full of the first player and their role as well as a small demo of seen cards so that we can check the color coded part as well.
+
+commit c81d79cddc41384b5368dcfe67da370bb495ee18
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 16:52:28 2026 -0600
+
+    Base template for the ClueGame board and control panel, deals some cards, adds board, control panel south, cards panel east
+
+commit 1116ef398345ba14fff841ac1d3b22736f126a8b
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 16:42:15 2026 -0600
+
+    Added a Player.draw() function and then updated Board.java to draw players after the cells,doors,etc
+
+commit a2f4f5c99bbfe5d8f98602f4d21f6ef442491fa6
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 16:37:05 2026 -0600
+
+    Basic format for cells drawing door indicators at the correct sides, and doing a second pass to include the room names at the label cell.
+
+commit c75bd95bbba1a0473905fc4389b30fc2a7f82cac
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 15:04:38 2026 -0600
+
+    Board extends JPanel, includes paintComponent for calcualting cell size, centering board, draw all cells. BoardCell includes a basic draw function
+
+commit fce39376d86914b702271b3798ad3eafbb26cf7f
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 12:45:16 2026 -0600
+
+    Finished LO19A, recheck tests before resubmitting
+
 commit 74a4f8c994c1a4f5d450c66469f9859a864e213a
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Mon Apr 20 12:42:44 2026 -0600
