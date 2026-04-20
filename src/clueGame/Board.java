@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -84,6 +85,7 @@ public class Board extends JPanel {
 	private void drawRoomNames(Graphics g, int cellSize, int xOffset, int yOffset) {
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("SansSerif", Font.BOLD, Math.max(10, cellSize / 2)));
+		FontMetrics metrics = g.getFontMetrics();
 
 		for (Room room : roomMap.values()) {
 			BoardCell labelCell = room.getLabelCell();
@@ -91,10 +93,32 @@ public class Board extends JPanel {
 				continue;
 			}
 
-			int x = xOffset + labelCell.getCol() * cellSize + 2;
+			String[] labelLines = getRoomLabelLines(room.getName());
+			int x = xOffset + labelCell.getCol() * cellSize + getRoomLabelXAdjustment(room.getName(), cellSize);
 			int y = yOffset + labelCell.getRow() * cellSize + cellSize;
-			g.drawString(room.getName(), x, y);
+
+			for (String line : labelLines) {
+				g.drawString(line, x, y);
+				y += metrics.getHeight();
+			}
 		}
+	}
+
+	private String[] getRoomLabelLines(String roomName) {
+		if (roomName.equals("Swimming Pool")) {
+			return new String[] {"Swimming", "Pool"};
+		}
+		return new String[] {roomName};
+	}
+
+	private int getRoomLabelXAdjustment(String roomName, int cellSize) {
+		if (roomName.equals("Swimming Pool")) {
+			return -cellSize;
+		}
+		if (roomName.equals("Isolation Quarters")) {
+			return -3 * cellSize;
+		}
+		return 2;
 	}
 
 	private void drawPlayers(Graphics g, int cellSize, int xOffset, int yOffset) {
