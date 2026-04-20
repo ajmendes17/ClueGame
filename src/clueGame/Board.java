@@ -78,6 +78,7 @@ public class Board extends JPanel {
 		}
 
 		drawRoomNames(g, cellSize, xOffset, yOffset);
+		drawPlayers(g, cellSize, xOffset, yOffset);
 	}
 
 	private void drawRoomNames(Graphics g, int cellSize, int xOffset, int yOffset) {
@@ -93,6 +94,16 @@ public class Board extends JPanel {
 			int x = xOffset + labelCell.getCol() * cellSize + 2;
 			int y = yOffset + labelCell.getRow() * cellSize + cellSize;
 			g.drawString(room.getName(), x, y);
+		}
+	}
+
+	private void drawPlayers(Graphics g, int cellSize, int xOffset, int yOffset) {
+		if (players == null) {
+			return;
+		}
+
+		for (Player player : players) {
+			player.draw(g, cellSize, xOffset, yOffset);
 		}
 	}
 
