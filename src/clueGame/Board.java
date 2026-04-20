@@ -1,10 +1,11 @@
 package clueGame;
 
 import java.awt.Color;
-import java.util.Collections;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,7 +14,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Board {
+import javax.swing.JPanel;
+
+public class Board extends JPanel {
 	// added NEIGHBOR_OFFSETS as a helper during refactoring
 	private static final int[][] NEIGHBOR_OFFSETS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 
@@ -49,6 +52,29 @@ public class Board {
 	// this method returns the only Board
 	public static Board getInstance() {
 		return theInstance;
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		if (grid == null || numRows == 0 || numColumns == 0) {
+			return;
+		}
+
+		int cellSize = Math.min(getWidth() / numColumns, getHeight() / numRows);
+		if (cellSize <= 0) {
+			return;
+		}
+
+		int xOffset = (getWidth() - numColumns * cellSize) / 2;
+		int yOffset = (getHeight() - numRows * cellSize) / 2;
+
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numColumns; col++) {
+				grid[row][col].draw(g, cellSize, xOffset, yOffset);
+			}
+		}
 	}
 
 	/*
