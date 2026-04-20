@@ -9,6 +9,7 @@ public class BoardCell {
 	private static final Color WALKWAY_COLOR = new Color(245, 218, 135);
 	private static final Color ROOM_COLOR = new Color(190, 190, 190);
 	private static final Color UNUSED_COLOR = new Color(45, 45, 45);
+	private static final Color DOOR_COLOR = new Color(30, 90, 200);
 
 	private final int row;
 	private final int col;
@@ -114,6 +115,8 @@ public class BoardCell {
 
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y, cellSize, cellSize);
+
+		drawDoor(g, x, y, cellSize);
 	}
 
 	private Color getCellColor() {
@@ -124,5 +127,32 @@ public class BoardCell {
 			return UNUSED_COLOR;
 		}
 		return ROOM_COLOR;
+	}
+
+	private void drawDoor(Graphics g, int x, int y, int cellSize) {
+		if (!isDoorway()) {
+			return;
+		}
+
+		int doorThickness = Math.max(3, cellSize / 5);
+		g.setColor(DOOR_COLOR);
+
+		switch (doorDirection) {
+		case UP:
+			g.fillRect(x, y, cellSize, doorThickness);
+			break;
+		case DOWN:
+			g.fillRect(x, y + cellSize - doorThickness, cellSize, doorThickness);
+			break;
+		case LEFT:
+			g.fillRect(x, y, doorThickness, cellSize);
+			break;
+		case RIGHT:
+			g.fillRect(x + cellSize - doorThickness, y, doorThickness, cellSize);
+			break;
+		case NONE:
+		default:
+			break;
+		}
 	}
 }

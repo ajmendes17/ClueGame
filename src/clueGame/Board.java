@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -74,6 +75,24 @@ public class Board extends JPanel {
 			for (int col = 0; col < numColumns; col++) {
 				grid[row][col].draw(g, cellSize, xOffset, yOffset);
 			}
+		}
+
+		drawRoomNames(g, cellSize, xOffset, yOffset);
+	}
+
+	private void drawRoomNames(Graphics g, int cellSize, int xOffset, int yOffset) {
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("SansSerif", Font.BOLD, Math.max(10, cellSize / 2)));
+
+		for (Room room : roomMap.values()) {
+			BoardCell labelCell = room.getLabelCell();
+			if (labelCell == null) {
+				continue;
+			}
+
+			int x = xOffset + labelCell.getCol() * cellSize + 2;
+			int y = yOffset + labelCell.getRow() * cellSize + cellSize;
+			g.drawString(room.getName(), x, y);
 		}
 	}
 
