@@ -113,8 +113,10 @@ public class BoardCell {
 		g.setColor(getCellColor());
 		g.fillRect(x, y, cellSize, cellSize);
 
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, cellSize, cellSize);
+		if (shouldDrawGrid()) {
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, cellSize, cellSize);
+		}
 
 		drawDoor(g, x, y, cellSize);
 	}
@@ -127,6 +129,10 @@ public class BoardCell {
 			return UNUSED_COLOR;
 		}
 		return ROOM_COLOR;
+	}
+
+	private boolean shouldDrawGrid() {
+		return initial == 'W';
 	}
 
 	private void drawDoor(Graphics g, int x, int y, int cellSize) {
