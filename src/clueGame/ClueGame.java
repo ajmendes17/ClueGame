@@ -30,6 +30,8 @@ public class ClueGame extends JFrame {
 
 		controlPanel = new GameControlPanel();
 		knownCardsPanel = new KnownCardsPanel();
+		board.setControlPanel(controlPanel);
+		controlPanel.setNextPlayerListener(e -> board.processNextPlayer());
 
 		add(board, BorderLayout.CENTER);
 		add(controlPanel, BorderLayout.SOUTH);
@@ -99,6 +101,7 @@ public class ClueGame extends JFrame {
 			ClueGame game = new ClueGame();
 			game.setVisible(true);
 			game.showSplashScreen();
+			game.board.processNextPlayer();
 		});
 	}
 }

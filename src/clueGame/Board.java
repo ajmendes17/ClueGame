@@ -16,6 +16,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
@@ -40,6 +41,11 @@ public class Board extends JPanel {
 
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
+	private GameControlPanel controlPanel;
+	private int currentPlayerIndex;
+	private int currentRoll;
+	private boolean waitingForHumanMove;
+	private Random turnRandom;
 
 	/*
 	 * variable and methods used for singleton pattern
@@ -49,6 +55,8 @@ public class Board extends JPanel {
 	// constructor is private to ensure only one can be created
 	private Board() {
 		super();
+		currentPlayerIndex = -1;
+		turnRandom = new Random();
 	}
 
 	// this method returns the only Board
@@ -137,9 +145,13 @@ public class Board extends JPanel {
 	public void initialize() {
 		targets = new HashSet<>();
 		visited = new HashSet<>();
+		currentPlayerIndex = -1;
+		currentRoll = 0;
+		waitingForHumanMove = false;
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
+			setInitialPlayerOccupancy();
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
@@ -487,6 +499,90 @@ public class Board extends JPanel {
 
 	public Set<BoardCell> getTargets() {
 		return targets;
+	}
+
+	public void setControlPanel(GameControlPanel controlPanel) {
+		this.controlPanel = controlPanel;
+	}
+
+	public void processNextPlayer() {
+		if (players == null || players.isEmpty()) {
+			return;
+		}
+
+		if (waitingForHumanMove) {
+			JOptionPane.showMessageDialog(this, "Finish your move before advancing to the next player.");
+			return;
+		}
+
+		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+		Player currentPlayer = players.get(currentPlayerIndex);
+		currentRoll = rollDie();
+		updateControlPanel(currentPlayer);
+
+		BoardCell startCell = getCell(currentPlayer.getRow(), currentPlayer.getColumn());
+		calcTargets(startCell, currentRoll);
+
+		if (targets.isEmpty()) {
+			JOptionPane.showMessageDialog(this, currentPlayer.getName() + " has no valid moves.");
+			repaint();
+			return;
+		}
+
+		if (currentPlayer instanceof HumanPlayer) {
+			waitingForHumanMove = true;
+			repaint();
+			return;
+		}
+
+		moveComputerPlayer((ComputerPlayer) currentPlayer);
+	}
+
+	private int rollDie() {
+		return turnRandom.nextInt(6) + 1;
+	}
+
+	private void updateControlPanel(Player player) {
+		if (controlPanel == null) {
+			return;
+		}
+
+		controlPanel.setTurn(player, currentRoll);
+		controlPanel.setGuess("No guess");
+		controlPanel.setGuessResult("No result");
+	}
+
+	private void moveComputerPlayer(ComputerPlayer player) {
+		BoardCell target = player.selectTarget(targets);
+		movePlayer(player, target);
+		repaint();
+	}
+
+	private void movePlayer(Player player, BoardCell destination) {
+		BoardCell startCell = getCell(player.getRow(), player.getColumn());
+		if (!startCell.isRoomCenter()) {
+			startCell.setOccupied(false);
+		}
+
+		player.setRow(destination.getRow());
+		player.setColumn(destination.getCol());
+
+		if (!destination.isRoomCenter()) {
+			destination.setOccupied(true);
+		}
+	}
+
+	private void setInitialPlayerOccupancy() {
+		if (players == null || grid == null) {
+			return;
+		}
+
+		for (Player player : players) {
+			BoardCell playerCell = getCell(player.getRow(), player.getColumn());
+			if (!playerCell.isRoomCenter()) {
+				playerCell.setOccupied(true);
+			}
+		}
 	}
 
 	// getters
