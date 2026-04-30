@@ -515,6 +515,7 @@ public class Board extends JPanel {
 			return;
 		}
 
+		clearTargetHighlights();
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 		Player currentPlayer = players.get(currentPlayerIndex);
 		currentRoll = rollDie();
@@ -531,6 +532,7 @@ public class Board extends JPanel {
 
 		if (currentPlayer instanceof HumanPlayer) {
 			waitingForHumanMove = true;
+			highlightTargets();
 			repaint();
 			return;
 		}
@@ -569,6 +571,24 @@ public class Board extends JPanel {
 
 		if (!destination.isRoomCenter()) {
 			destination.setOccupied(true);
+		}
+	}
+
+	private void highlightTargets() {
+		for (BoardCell target : targets) {
+			target.setTarget(true);
+		}
+	}
+
+	private void clearTargetHighlights() {
+		if (grid == null) {
+			return;
+		}
+
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numColumns; col++) {
+				grid[row][col].setTarget(false);
+			}
 		}
 	}
 

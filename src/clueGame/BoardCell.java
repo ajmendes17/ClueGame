@@ -21,6 +21,7 @@ public class BoardCell {
 	private char secretPassage;
 	private final Set<BoardCell> adjacencies;
 	private boolean occupied;
+	private boolean target;
 
 	public BoardCell(int row, int col) {
 		this.row = row;
@@ -90,6 +91,14 @@ public class BoardCell {
 		this.occupied = occupied;
 	}
 
+	public boolean isTarget() {
+		return target;
+	}
+
+	public void setTarget(boolean target) {
+		this.target = target;
+	}
+
 	public void addAdjacency(BoardCell cell) {
 		adjacencies.add(cell);
 	}
@@ -122,6 +131,9 @@ public class BoardCell {
 	}
 
 	private Color getCellColor() {
+		if (target) {
+			return Color.CYAN;
+		}
 		if (initial == 'W') {
 			return WALKWAY_COLOR;
 		}
