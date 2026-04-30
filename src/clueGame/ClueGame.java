@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class ClueGame extends JFrame {
@@ -49,6 +50,13 @@ public class ClueGame extends JFrame {
 		knownCardsPanel.updatePanels(getHumanPlayer(), buildDemoSeenCards());
 	}
 
+	private void showSplashScreen() {
+		JOptionPane.showMessageDialog(this,
+				"You are playing Clue!\nCan you find the solution before the computer players?",
+				"Welcome to Clue",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
 	private Map<Card, Player> buildDemoSeenCards() {
 		Map<Card, Player> seenCards = new LinkedHashMap<>();
 
@@ -90,6 +98,7 @@ public class ClueGame extends JFrame {
 		SwingUtilities.invokeLater(() -> {
 			ClueGame game = new ClueGame();
 			game.setVisible(true);
+			game.showSplashScreen();
 		});
 	}
 }

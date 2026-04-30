@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -92,6 +93,10 @@ public class GameControlPanel extends JPanel {
 
 	public void setGuessResult(String guessResult) {
 		guessResultField.setText(guessResult);
+	}
+
+	public void setNextPlayerListener(ActionListener listener) {
+		nextPlayerButton.addActionListener(listener);
 	}
 
 	public static void main(String[] args) {
