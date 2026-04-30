@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class Board extends JPanel {
 		super();
 		currentPlayerIndex = -1;
 		turnRandom = new Random();
+		addMouseListener(new BoardMouseListener());
 	}
 
 	// this method returns the only Board
@@ -560,6 +563,14 @@ public class Board extends JPanel {
 		repaint();
 	}
 
+	private void moveHumanPlayer(BoardCell target) {
+		Player human = players.get(currentPlayerIndex);
+		movePlayer(human, target);
+		waitingForHumanMove = false;
+		clearTargetHighlights();
+		repaint();
+	}
+
 	private void movePlayer(Player player, BoardCell destination) {
 		BoardCell startCell = getCell(player.getRow(), player.getColumn());
 		if (!startCell.isRoomCenter()) {
@@ -589,6 +600,50 @@ public class Board extends JPanel {
 			for (int col = 0; col < numColumns; col++) {
 				grid[row][col].setTarget(false);
 			}
+		}
+	}
+
+	private BoardCell getClickedCell(MouseEvent event) {
+		if (grid == null || numRows == 0 || numColumns == 0) {
+			return null;
+		}
+
+		int cellSize = Math.min(getWidth() / numColumns, getHeight() / numRows);
+		if (cellSize <= 0) {
+			return null;
+		}
+
+		int xOffset = (getWidth() - numColumns * cellSize) / 2;
+		int yOffset = (getHeight() - numRows * cellSize) / 2;
+		int clickedCol = (event.getX() - xOffset) / cellSize;
+		int clickedRow = (event.getY() - yOffset) / cellSize;
+
+		if (event.getX() < xOffset || event.getY() < yOffset || !isInBounds(clickedRow, clickedCol)) {
+			return null;
+		}
+
+		return getCell(clickedRow, clickedCol);
+	}
+
+	private void handleBoardClick(MouseEvent event) {
+		if (!waitingForHumanMove) {
+			JOptionPane.showMessageDialog(this, "The board can only be clicked during the human player's turn.");
+			return;
+		}
+
+		BoardCell clickedCell = getClickedCell(event);
+		if (clickedCell == null || !targets.contains(clickedCell)) {
+			JOptionPane.showMessageDialog(this, "That is not a valid target. Please select a highlighted location.");
+			return;
+		}
+
+		moveHumanPlayer(clickedCell);
+	}
+
+	private class BoardMouseListener extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent event) {
+			handleBoardClick(event);
 		}
 	}
 
