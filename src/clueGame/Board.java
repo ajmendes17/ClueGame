@@ -557,6 +557,46 @@ public class Board extends JPanel {
 		}
 	}
 
+	public void moveSuggestedPlayerToRoom(Solution suggestion) {
+		Player suggestedPlayer = getPlayerByName(suggestion.getPerson().getCardName());
+		BoardCell roomCenter = getRoomCenter(suggestion.getRoom());
+
+		if (suggestedPlayer == null || roomCenter == null) {
+			return;
+		}
+
+		movePlayer(suggestedPlayer, roomCenter);
+		repaint();
+	}
+
+	private Player getPlayerByName(String playerName) {
+		if (players == null) {
+			return null;
+		}
+
+		for (Player player : players) {
+			if (player.getName().equals(playerName)) {
+				return player;
+			}
+		}
+
+		return null;
+	}
+
+	private BoardCell getRoomCenter(Card roomCard) {
+		if (roomCard == null || roomCard.getType() != CardType.ROOM || roomMap == null) {
+			return null;
+		}
+
+		for (Room room : roomMap.values()) {
+			if (room.getName().equals(roomCard.getCardName())) {
+				return room.getCenterCell();
+			}
+		}
+
+		return null;
+	}
+
 	void highlightTargets() {
 		for (BoardCell target : targets) {
 			target.setTarget(true);
