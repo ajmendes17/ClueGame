@@ -137,9 +137,48 @@ public class Board extends JPanel {
 			return;
 		}
 
+		Map<String, Integer> playerCounts = new HashMap<>();
 		for (Player player : players) {
-			player.draw(g, cellSize, xOffset, yOffset);
+			String cellKey = getPlayerCellKey(player);
+			playerCounts.put(cellKey, playerCounts.getOrDefault(cellKey, 0) + 1);
 		}
+
+		Map<String, Integer> playersDrawn = new HashMap<>();
+		for (Player player : players) {
+			String cellKey = getPlayerCellKey(player);
+			int drawIndex = playersDrawn.getOrDefault(cellKey, 0);
+			playersDrawn.put(cellKey, drawIndex + 1);
+			drawPlayer(g, player, drawIndex, playerCounts.get(cellKey), cellSize, xOffset, yOffset);
+		}
+	}
+
+	private String getPlayerCellKey(Player player) {
+		return player.getRow() + "," + player.getColumn();
+	}
+
+	private void drawPlayer(Graphics g, Player player, int drawIndex, int playerCount,
+			int cellSize, int xOffset, int yOffset) {
+		BoardCell playerCell = getCell(player.getRow(), player.getColumn());
+		if (!playerCell.isRoomCenter() || playerCount == 1) {
+			player.draw(g, cellSize, xOffset, yOffset);
+			return;
+		}
+
+		int cellsPerRow = Math.min(3, Math.max(2, playerCount));
+		int rowsNeeded = (playerCount + cellsPerRow - 1) / cellsPerRow;
+		int slotWidth = cellSize / cellsPerRow;
+		int slotHeight = cellSize / rowsNeeded;
+		int playerSize = Math.max(5, Math.min(slotWidth, slotHeight) - 2);
+		int rowOffset = drawIndex / cellsPerRow;
+		int colOffset = drawIndex % cellsPerRow;
+		int x = xOffset + player.getColumn() * cellSize + colOffset * slotWidth + (slotWidth - playerSize) / 2;
+		int y = yOffset + player.getRow() * cellSize + rowOffset * slotHeight + (slotHeight - playerSize) / 2;
+
+		g.setColor(player.getColor());
+		g.fillOval(x, y, playerSize, playerSize);
+
+		g.setColor(Color.BLACK);
+		g.drawOval(x, y, playerSize, playerSize);
 	}
 
 	/*

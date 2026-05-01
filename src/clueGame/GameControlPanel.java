@@ -84,7 +84,16 @@ public class GameControlPanel extends JPanel {
 	public void setTurn(Player player, int roll) {
 		currentTurnField.setText(player.getName());
 		currentTurnField.setBackground(player.getColor());
+		currentTurnField.setForeground(getReadableTextColor(player.getColor()));
 		dieRollField.setText(String.valueOf(roll));
+	}
+
+	private Color getReadableTextColor(Color backgroundColor) {
+		int brightness = backgroundColor.getRed() + backgroundColor.getGreen() + backgroundColor.getBlue();
+		if (brightness < 384) {
+			return Color.WHITE;
+		}
+		return Color.BLACK;
 	}
 
 	public void setGuess(String guess) {
