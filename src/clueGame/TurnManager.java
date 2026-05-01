@@ -105,6 +105,40 @@ public class TurnManager {
 		controlPanel.setGuessResult("No result");
 	}
 
+	private void processSuggestion(Player accuser, Solution suggestion) {
+		board.moveSuggestedPlayerToRoom(suggestion);
+		SuggestionResult result = board.handleSuggestionWithResult(suggestion, accuser);
+
+		if (controlPanel != null) {
+			controlPanel.setGuess(formatSuggestion(accuser, suggestion));
+			controlPanel.setGuessResult(formatSuggestionResult(accuser, result));
+		}
+
+		if (result.wasDisproved()) {
+			accuser.addSeenCard(result.getDisprovingCard());
+		}
+	}
+
+	private String formatSuggestion(Player accuser, Solution suggestion) {
+		return accuser.getName() + " suggested "
+				+ suggestion.getPerson().getCardName() + " with "
+				+ suggestion.getWeapon().getCardName() + " in "
+				+ suggestion.getRoom().getCardName();
+	}
+
+	private String formatSuggestionResult(Player accuser, SuggestionResult result) {
+		if (!result.wasDisproved()) {
+			return "No new clue";
+		}
+
+		if (accuser instanceof HumanPlayer) {
+			return result.getDisprovingPlayer().getName() + " showed "
+					+ result.getDisprovingCard().getCardName();
+		}
+
+		return "Suggestion disproved by " + result.getDisprovingPlayer().getName();
+	}
+
 	private void moveComputerPlayer(ComputerPlayer player) {
 		BoardCell target = player.selectTarget(board.getTargets());
 		board.movePlayer(player, target);
