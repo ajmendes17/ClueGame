@@ -788,24 +788,29 @@ public class Board extends JPanel {
 	}
 
 	public Card handleSuggestion(Solution suggestion, Player accuser) {
+		SuggestionResult result = handleSuggestionWithResult(suggestion, accuser);
+		return result.getDisprovingCard();
+	}
+
+	public SuggestionResult handleSuggestionWithResult(Solution suggestion, Player accuser) {
 		if (players == null || players.isEmpty()) {
-			return null;
+			return new SuggestionResult(null, null);
 		}
 
 		int accuserIndex = players.indexOf(accuser);
 		if (accuserIndex == -1) {
-			return null;
+			return new SuggestionResult(null, null);
 		}
 
 		for (int offset = 1; offset < players.size(); offset++) {
 			Player currentPlayer = players.get((accuserIndex + offset) % players.size());
 			Card disprovedCard = currentPlayer.disproveSuggestion(suggestion);
 			if (disprovedCard != null) {
-				return disprovedCard;
+				return new SuggestionResult(currentPlayer, disprovedCard);
 			}
 		}
 
-		return null;
+		return new SuggestionResult(null, null);
 	}
 
 	public void setPlayers(ArrayList<Player> players) {

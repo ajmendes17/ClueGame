@@ -1,3 +1,24 @@
+commit 1d7bb6481786aa73804c27afaef5e1b6f9bbf8d2 (HEAD -> main, origin/main, origin/HEAD)
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri May 1 10:12:37 2026 -0600
+
+    Refactored the turn flow logic into TurnManager - Jake DiVito
+
+commit 85f379cb742dedcb224bdaa7147316d2973c24aa
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri May 1 09:58:56 2026 -0600
+
+    Board currently owns display, player movement, click validation, dice rolling, target highlighting, and turn advancement all in one place.
+     * Adding a new file to do all of this works to refactor turn flow into dedicated manager
+
+     
+     
+     
+     
+     
+     
+     
+The rest of the gitlog below
 commit 1d7bb6481786aa73804c27afaef5e1b6f9bbf8d2
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Fri May 1 10:12:37 2026 -0600
