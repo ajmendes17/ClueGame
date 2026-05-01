@@ -2,6 +2,11 @@ package clueGame;
 
 import java.util.Random;
 
+
+/*
+ * Board currently owns display, player movement, click validation, dice rolling, target highlighting, and turn advancement all in one place.
+ * Adding a new file to do all of this works to refactor turn flow into dedicated manager
+ */
 public class TurnManager {
 	private Board board;
 	private GameControlPanel controlPanel;
