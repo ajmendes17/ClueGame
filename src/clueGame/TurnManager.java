@@ -1,12 +1,11 @@
 package clueGame;
 
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 
-/*
- * Board currently owns display, player movement, click validation, dice rolling, target highlighting, and turn advancement all in one place.
- * Adding a new file to do all of this works to refactor turn flow into dedicated manager
- */
 public class TurnManager {
 	private Board board;
 	private GameControlPanel controlPanel;
@@ -23,6 +22,12 @@ public class TurnManager {
 		this.turnRandom = new Random();
 	}
 
+	public void reset() {
+		currentPlayerIndex = -1;
+		currentRoll = 0;
+		waitingForHumanMove = false;
+	}
+
 	public void setControlPanel(GameControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
 	}
@@ -33,5 +38,84 @@ public class TurnManager {
 
 	public boolean isWaitingForHumanMove() {
 		return waitingForHumanMove;
+	}
+
+	public void processNextPlayer() {
+		ArrayList<Player> players = board.getPlayers();
+		if (players == null || players.isEmpty()) {
+			return;
+		}
+
+		if (waitingForHumanMove) {
+			JOptionPane.showMessageDialog(board, "Finish your move before advancing to the next player.");
+			return;
+		}
+
+		board.clearTargetHighlights();
+		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+		Player currentPlayer = players.get(currentPlayerIndex);
+		currentRoll = rollDie();
+		updateControlPanel(currentPlayer);
+
+		BoardCell startCell = board.getCell(currentPlayer.getRow(), currentPlayer.getColumn());
+		board.calcTargets(startCell, currentRoll);
+
+		if (board.getTargets().isEmpty()) {
+			JOptionPane.showMessageDialog(board, currentPlayer.getName() + " has no valid moves.");
+			board.repaint();
+			return;
+		}
+
+		if (currentPlayer instanceof HumanPlayer) {
+			waitingForHumanMove = true;
+			board.highlightTargets();
+			board.repaint();
+			return;
+		}
+
+		moveComputerPlayer((ComputerPlayer) currentPlayer);
+	}
+
+	public void handleBoardClick(MouseEvent event) {
+		if (!waitingForHumanMove) {
+			JOptionPane.showMessageDialog(board, "The board can only be clicked during the human player's turn.");
+			return;
+		}
+
+		BoardCell clickedCell = board.getClickedCell(event);
+		if (clickedCell == null || !board.getTargets().contains(clickedCell)) {
+			JOptionPane.showMessageDialog(board, "That is not a valid target. Please select a highlighted location.");
+			return;
+		}
+
+		moveHumanPlayer(clickedCell);
+	}
+
+	private int rollDie() {
+		return turnRandom.nextInt(6) + 1;
+	}
+
+	private void updateControlPanel(Player player) {
+		if (controlPanel == null) {
+			return;
+		}
+
+		controlPanel.setTurn(player, currentRoll);
+		controlPanel.setGuess("No guess");
+		controlPanel.setGuessResult("No result");
+	}
+
+	private void moveComputerPlayer(ComputerPlayer player) {
+		BoardCell target = player.selectTarget(board.getTargets());
+		board.movePlayer(player, target);
+		board.repaint();
+	}
+
+	private void moveHumanPlayer(BoardCell target) {
+		Player human = board.getPlayers().get(currentPlayerIndex);
+		board.movePlayer(human, target);
+		waitingForHumanMove = false;
+		board.clearTargetHighlights();
+		board.repaint();
 	}
 }
