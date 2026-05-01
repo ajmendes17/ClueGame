@@ -1,3 +1,39 @@
+commit 18c0cb68d8ff638074e6568f1f81af1e2c62c023
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri May 1 09:43:13 2026 -0600
+
+    Changed the black background player to be more transparent and tested the functionality.
+
+commit cd526109a90dc8f32db1d7e35d58c35d2fdcd4ba
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed Apr 29 23:23:33 2026 -0600
+
+    Added a mouse listener for basic board clicks and related moves or errors
+
+commit b475b46440c655a5b3f926292fe4594ef5b863e8
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed Apr 29 22:49:17 2026 -0600
+
+    Added a target flag in BoardCell and then made sure Board clears the target before a new turn
+
+commit 7442af866cdd1baccc1a5948eb794cd91a750e02
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed Apr 29 22:39:44 2026 -0600
+
+    Board owns the current turn and flow state, might need to refactor this later, ClueGame also wires the Next button to process players and starts the first turn. Next step is human player and mouseclick movement/ tests
+
+commit 899e52046b44bcd8a018ea3796a9507072101fb1
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed Apr 29 22:06:30 2026 -0600
+
+    Added the JOptionPane for ClueGame and setNextPLayerListener so we can set up logic later
+
+commit 1bdec28ab794277b452bf578b2a4886ec73140cd
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon Apr 20 17:20:59 2026 -0600
+
+    Updated gitlog
+
 commit 0a35b0682b521ab845251121682707b172586c23
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Mon Apr 20 17:18:24 2026 -0600

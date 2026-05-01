@@ -8,6 +8,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+
+/*
+ * Tested to make sure that all the buttons work
+ * You must make a move before moving on to the next person
+ * You are not able to move to a square that is illegal
+ * You can enter a room
+ */
+
 public class ClueGame extends JFrame {
 	private static final int FRAME_WIDTH = 1000;
 	private static final int FRAME_HEIGHT = 750;
