@@ -93,8 +93,36 @@ public class TurnManager {
 		moveHumanPlayer(clickedCell);
 	}
 
+	public void handleAccusationButton() {
+		Player currentPlayer = getCurrentPlayer();
+		if (!(currentPlayer instanceof HumanPlayer) || !waitingForHumanMove) {
+			JOptionPane.showMessageDialog(board,
+					"You can only make an accusation at the beginning of your turn.");
+			return;
+		}
+
+		Window owner = SwingUtilities.getWindowAncestor(board);
+		SuggestionDialog dialog = new SuggestionDialog(owner, board);
+		dialog.setVisible(true);
+
+		Solution accusation = dialog.getSuggestion();
+		if (accusation == null) {
+			return;
+		}
+
+		handleAccusation(currentPlayer, accusation);
+	}
+
 	private int rollDie() {
 		return turnRandom.nextInt(6) + 1;
+	}
+
+	private Player getCurrentPlayer() {
+		ArrayList<Player> players = board.getPlayers();
+		if (players == null || currentPlayerIndex < 0 || currentPlayerIndex >= players.size()) {
+			return null;
+		}
+		return players.get(currentPlayerIndex);
 	}
 
 	private void updateControlPanel(Player player) {
@@ -139,6 +167,22 @@ public class TurnManager {
 		}
 
 		return "Suggestion disproved by " + result.getDisprovingPlayer().getName();
+	}
+
+	private void handleAccusation(Player accuser, Solution accusation) {
+		boolean correct = board.checkAccusation(accusation);
+		String resultText = correct ? "Correct accusation. " + accuser.getName() + " wins!"
+				: "Incorrect accusation. " + accuser.getName() + " loses.";
+
+		JOptionPane.showMessageDialog(board, formatAccusation(accuser, accusation) + "\n" + resultText);
+		System.exit(0);
+	}
+
+	private String formatAccusation(Player accuser, Solution accusation) {
+		return accuser.getName() + " accused "
+				+ accusation.getPerson().getCardName() + " with "
+				+ accusation.getWeapon().getCardName() + " in "
+				+ accusation.getRoom().getCardName();
 	}
 
 	private void moveComputerPlayer(ComputerPlayer player) {

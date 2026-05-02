@@ -40,6 +40,7 @@ public class ClueGame extends JFrame {
 		knownCardsPanel = new KnownCardsPanel();
 		board.setControlPanel(controlPanel);
 		controlPanel.setNextPlayerListener(e -> board.processNextPlayer());
+		controlPanel.setAccusationListener(e -> board.handleAccusationButton());
 
 		add(board, BorderLayout.CENTER);
 		add(controlPanel, BorderLayout.SOUTH);

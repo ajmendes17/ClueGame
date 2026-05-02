@@ -543,6 +543,10 @@ public class Board extends JPanel {
 		turnManager.processNextPlayer();
 	}
 
+	public void handleAccusationButton() {
+		turnManager.handleAccusationButton();
+	}
+
 	void movePlayer(Player player, BoardCell destination) {
 		BoardCell startCell = getCell(player.getRow(), player.getColumn());
 		if (!startCell.isRoomCenter()) {

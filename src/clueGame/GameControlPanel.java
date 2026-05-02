@@ -108,6 +108,10 @@ public class GameControlPanel extends JPanel {
 		nextPlayerButton.addActionListener(listener);
 	}
 
+	public void setAccusationListener(ActionListener listener) {
+		accusationButton.addActionListener(listener);
+	}
+
 	public static void main(String[] args) {
 		GameControlPanel panel = new GameControlPanel();
 		JFrame frame = new JFrame();
