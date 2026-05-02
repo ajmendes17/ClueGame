@@ -1,10 +1,12 @@
 package clueGame;
 
+import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class TurnManager {
 	private Board board;
@@ -143,6 +145,10 @@ public class TurnManager {
 		BoardCell target = player.selectTarget(board.getTargets());
 		board.movePlayer(player, target);
 		board.repaint();
+
+		if (target.isRoomCenter()) {
+			processSuggestion(player, player.createSuggestion());
+		}
 	}
 
 	private void moveHumanPlayer(BoardCell target) {
@@ -151,5 +157,21 @@ public class TurnManager {
 		waitingForHumanMove = false;
 		board.clearTargetHighlights();
 		board.repaint();
+
+		if (target.isRoomCenter()) {
+			promptHumanSuggestion(human, target);
+		}
+	}
+
+	private void promptHumanSuggestion(Player human, BoardCell roomCell) {
+		Card roomCard = new Card(board.getRoom(roomCell).getName(), CardType.ROOM);
+		Window owner = SwingUtilities.getWindowAncestor(board);
+		SuggestionDialog dialog = new SuggestionDialog(owner, board, roomCard);
+		dialog.setVisible(true);
+
+		Solution suggestion = dialog.getSuggestion();
+		if (suggestion != null) {
+			processSuggestion(human, suggestion);
+		}
 	}
 }
