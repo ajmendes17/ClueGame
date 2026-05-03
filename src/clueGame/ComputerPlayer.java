@@ -9,9 +9,27 @@ import java.util.Set;
 
 public class ComputerPlayer extends Player {
 	private static final Random random = new Random();
+	private Solution pendingAccusation;
 
 	public ComputerPlayer(String name, Color color, int row, int column) {
 		super(name, color, row, column);
+		pendingAccusation = null;
+	}
+
+	public Solution getPendingAccusation() {
+		return pendingAccusation;
+	}
+
+	public void setPendingAccusation(Solution pendingAccusation) {
+		this.pendingAccusation = pendingAccusation;
+	}
+
+	public void clearPendingAccusation() {
+		pendingAccusation = null;
+	}
+
+	public boolean hasPendingAccusation() {
+		return pendingAccusation != null;
 	}
 
 	public Solution createSuggestion() {

@@ -56,6 +56,15 @@ public class TurnManager {
 		board.clearTargetHighlights();
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 		Player currentPlayer = players.get(currentPlayerIndex);
+
+		if (currentPlayer instanceof ComputerPlayer
+				&& ((ComputerPlayer) currentPlayer).hasPendingAccusation()) {
+			currentRoll = 0;
+			updateControlPanel(currentPlayer);
+			handleComputerAccusation((ComputerPlayer) currentPlayer);
+			return;
+		}
+
 		currentRoll = rollDie();
 		updateControlPanel(currentPlayer);
 
@@ -135,7 +144,7 @@ public class TurnManager {
 		controlPanel.setGuessResult("No result");
 	}
 
-	private void processSuggestion(Player accuser, Solution suggestion) {
+	private SuggestionResult processSuggestion(Player accuser, Solution suggestion) {
 		board.moveSuggestedPlayerToRoom(suggestion);
 		SuggestionResult result = board.handleSuggestionWithResult(suggestion, accuser);
 
@@ -147,6 +156,8 @@ public class TurnManager {
 		if (result.wasDisproved()) {
 			accuser.addSeenCard(result.getDisprovingCard());
 		}
+
+		return result;
 	}
 
 	private String formatSuggestion(Player accuser, Solution suggestion) {
@@ -178,6 +189,12 @@ public class TurnManager {
 		System.exit(0);
 	}
 
+	private void handleComputerAccusation(ComputerPlayer computer) {
+		Solution accusation = computer.getPendingAccusation();
+		computer.clearPendingAccusation();
+		handleAccusation(computer, accusation);
+	}
+
 	private String formatAccusation(Player accuser, Solution accusation) {
 		return accuser.getName() + " accused "
 				+ accusation.getPerson().getCardName() + " with "
@@ -191,8 +208,25 @@ public class TurnManager {
 		board.repaint();
 
 		if (target.isRoomCenter()) {
-			processSuggestion(player, player.createSuggestion());
+			Solution suggestion = player.createSuggestion();
+			SuggestionResult result = processSuggestion(player, suggestion);
+			updateComputerAccusation(player, suggestion, result);
 		}
+	}
+
+	private void updateComputerAccusation(ComputerPlayer player, Solution suggestion, SuggestionResult result) {
+		if (result.wasDisproved() || playerHasSuggestedCard(player, suggestion)) {
+			player.clearPendingAccusation();
+			return;
+		}
+
+		player.setPendingAccusation(suggestion);
+	}
+
+	private boolean playerHasSuggestedCard(Player player, Solution suggestion) {
+		return player.getHand().contains(suggestion.getPerson())
+				|| player.getHand().contains(suggestion.getWeapon())
+				|| player.getHand().contains(suggestion.getRoom());
 	}
 
 	private void moveHumanPlayer(BoardCell target) {
