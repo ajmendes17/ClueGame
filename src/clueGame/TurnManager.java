@@ -3,7 +3,9 @@ package clueGame;
 import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -15,6 +17,7 @@ public class TurnManager {
 	private int currentRoll;
 	private boolean waitingForHumanMove;
 	private Random turnRandom;
+	private Set<Player> playersMovedBySuggestion;
 
 	public TurnManager(Board board) {
 		this.board = board;
@@ -22,12 +25,14 @@ public class TurnManager {
 		this.currentRoll = 0;
 		this.waitingForHumanMove = false;
 		this.turnRandom = new Random();
+		this.playersMovedBySuggestion = new HashSet<>();
 	}
 
 	public void reset() {
 		currentPlayerIndex = -1;
 		currentRoll = 0;
 		waitingForHumanMove = false;
+		playersMovedBySuggestion.clear();
 	}
 
 	public void setControlPanel(GameControlPanel controlPanel) {
@@ -70,6 +75,7 @@ public class TurnManager {
 
 		BoardCell startCell = board.getCell(currentPlayer.getRow(), currentPlayer.getColumn());
 		board.calcTargets(startCell, currentRoll);
+		addStayTargetIfAllowed(currentPlayer, startCell);
 
 		if (board.getTargets().isEmpty()) {
 			JOptionPane.showMessageDialog(board, currentPlayer.getName() + " has no valid moves.");
@@ -145,7 +151,11 @@ public class TurnManager {
 	}
 
 	private SuggestionResult processSuggestion(Player accuser, Solution suggestion) {
-		board.moveSuggestedPlayerToRoom(suggestion);
+		Player movedPlayer = board.moveSuggestedPlayerToRoom(suggestion);
+		if (movedPlayer != null && movedPlayer != accuser) {
+			playersMovedBySuggestion.add(movedPlayer);
+		}
+
 		SuggestionResult result = board.handleSuggestionWithResult(suggestion, accuser);
 
 		if (controlPanel != null) {
@@ -158,6 +168,15 @@ public class TurnManager {
 		}
 
 		return result;
+	}
+
+	private void addStayTargetIfAllowed(Player player, BoardCell startCell) {
+		if (playersMovedBySuggestion.contains(player) && startCell.isRoomCenter()) {
+			board.getTargets().add(startCell);
+			return;
+		}
+
+		playersMovedBySuggestion.remove(player);
 	}
 
 	private String formatSuggestion(Player accuser, Solution suggestion) {
@@ -192,6 +211,7 @@ public class TurnManager {
 	private void handleComputerAccusation(ComputerPlayer computer) {
 		Solution accusation = computer.getPendingAccusation();
 		computer.clearPendingAccusation();
+		playersMovedBySuggestion.remove(computer);
 		handleAccusation(computer, accusation);
 	}
 
@@ -212,6 +232,8 @@ public class TurnManager {
 			SuggestionResult result = processSuggestion(player, suggestion);
 			updateComputerAccusation(player, suggestion, result);
 		}
+
+		playersMovedBySuggestion.remove(player);
 	}
 
 	private void updateComputerAccusation(ComputerPlayer player, Solution suggestion, SuggestionResult result) {
@@ -239,6 +261,8 @@ public class TurnManager {
 		if (target.isRoomCenter()) {
 			promptHumanSuggestion(human, target);
 		}
+
+		playersMovedBySuggestion.remove(human);
 	}
 
 	private void promptHumanSuggestion(Player human, BoardCell roomCell) {

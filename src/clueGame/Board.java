@@ -561,16 +561,17 @@ public class Board extends JPanel {
 		}
 	}
 
-	public void moveSuggestedPlayerToRoom(Solution suggestion) {
+	public Player moveSuggestedPlayerToRoom(Solution suggestion) {
 		Player suggestedPlayer = getPlayerByName(suggestion.getPerson().getCardName());
 		BoardCell roomCenter = getRoomCenter(suggestion.getRoom());
 
 		if (suggestedPlayer == null || roomCenter == null) {
-			return;
+			return null;
 		}
 
 		movePlayer(suggestedPlayer, roomCenter);
 		repaint();
+		return suggestedPlayer;
 	}
 
 	private Player getPlayerByName(String playerName) {
