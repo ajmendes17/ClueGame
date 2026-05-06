@@ -1,3 +1,21 @@
+commit d7746415a9b2b794b73c5e0afb1b9427daa135f6
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed May 6 14:41:25 2026 -0600
+
+    Added the cards in my hand to the known cards section for ease of visualization
+
+commit 5ebe0e9cd27193baf57ebd40ba9e93ae1f591f9f
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed May 6 14:39:38 2026 -0600
+
+    Added later seen cards to the GUI
+
+commit f45f7faa7085bddc0469c12039a1215fd222c505
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Wed May 6 14:21:42 2026 -0600
+
+    Updated gitlog, all functions working and tests passing
+
 commit f10263bc8fd01c7d983245a6034faaf17dbd326b
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Mon May 4 20:17:35 2026 -0600

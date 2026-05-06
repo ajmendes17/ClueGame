@@ -1,6 +1,7 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
@@ -127,6 +128,28 @@ public class ComputerAITest {
 		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 22, 25);
 		Solution suggestion = player.createSuggestion();
 		assertEquals(new Card("Yellow Room", CardType.ROOM), suggestion.getRoom());
+	}
+
+	// Check that a computer's saved accusation is correct when all three cards match the solution.
+	@Test
+	public void testComputerAccusationCorrect() {
+		board.setAnswer(new Solution(ajCard, candlestickCard, moonRoomCard));
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
+		player.setPendingAccusation(new Solution(ajCard, candlestickCard, moonRoomCard));
+
+		assertTrue(player.hasPendingAccusation());
+		assertTrue(board.checkAccusation(player.getPendingAccusation()));
+	}
+
+	// Check that a computer's saved accusation is wrong when any card does not match the solution.
+	@Test
+	public void testComputerAccusationWrong() {
+		board.setAnswer(new Solution(ajCard, candlestickCard, moonRoomCard));
+		ComputerPlayer player = new ComputerPlayer("Jake DiVito", Color.BLACK, 0, 0);
+		player.setPendingAccusation(new Solution(ajCard, ropeCard, moonRoomCard));
+
+		assertTrue(player.hasPendingAccusation());
+		assertFalse(board.checkAccusation(player.getPendingAccusation()));
 	}
 
 	// Check that a computer player selects randomly when no room targets are available.
