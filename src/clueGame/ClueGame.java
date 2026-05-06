@@ -72,6 +72,9 @@ public class ClueGame extends JFrame {
 
 	private Map<Card, Player> buildDemoSeenCards() {
 		Map<Card, Player> seenCards = new LinkedHashMap<>();
+		Player humanPlayer = getHumanPlayer();
+
+		addHandToSeenCards(seenCards, humanPlayer);
 
 		for (Player player : board.getPlayers()) {
 			if (player instanceof HumanPlayer) {
@@ -82,6 +85,16 @@ public class ClueGame extends JFrame {
 		}
 
 		return seenCards;
+	}
+
+	private void addHandToSeenCards(Map<Card, Player> seenCards, Player player) {
+		if (player == null) {
+			return;
+		}
+
+		for (Card card : player.getHand()) {
+			seenCards.put(card, player);
+		}
 	}
 
 	private void addFirstCardFromPlayer(Map<Card, Player> seenCards, Player player) {
