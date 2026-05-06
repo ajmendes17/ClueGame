@@ -1,3 +1,45 @@
+commit f10263bc8fd01c7d983245a6034faaf17dbd326b
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Mon May 4 20:17:35 2026 -0600
+
+    Tracks players who were moved into a room by another player’s suggestion, lets TurnManager know who should stay
+
+commit 6abfb9a26521532f64e2517a150a62af933cfed0
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Sat May 2 19:48:06 2026 -0600
+
+    Added the computers accusation methods and then updated turn manager so that the computer will make accusations when one is pending
+
+commit 9ba64197df7f3484434830db6b87688a41c74ddc
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Sat May 2 11:31:56 2026 -0600
+
+    Added human accusation flow and organization. Supports make an accusation and checks it all
+
+commit 155d197974896e87a92c31d7da93f64e7d23c493
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri May 1 20:38:57 2026 -0600
+
+    Added the suggestion dialog in a new file and then updated turn manager so that the dialog opens automatically from the turn manager
+
+commit a4678c18febf0ada9f4a1703b935ce8a5a588665
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri May 1 15:06:17 2026 -0600
+
+    processSuggestion was added but isn't hooked into turns yet.
+
+commit f78421baded43c086ff65841c68261258eca26cf
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri May 1 11:10:38 2026 -0600
+
+    added teh moveSuggestedPlayerToRoom in board.java to find the player named in the suggestion, find teh room, move the player, repaint the board (gotta check to make sure that's what the rules do)
+
+commit 05aa7e69451674a91be57c9d486c5d1279a86bc4
+Author: AJ Mendes <ajmendes17@gmail.com>
+Date:   Fri May 1 11:01:33 2026 -0600
+
+    Added a SuggestionResult page with disproving player or card, getters, and updated board.java to delegate to this
+
 commit 1d7bb6481786aa73804c27afaef5e1b6f9bbf8d2
 Author: AJ Mendes <ajmendes17@gmail.com>
 Date:   Fri May 1 10:12:37 2026 -0600
