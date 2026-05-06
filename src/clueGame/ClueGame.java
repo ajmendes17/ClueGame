@@ -58,7 +58,9 @@ public class ClueGame extends JFrame {
 		controlPanel.setTurn(firstPlayer, 0);
 		controlPanel.setGuess("No guess yet");
 		controlPanel.setGuessResult("No result yet");
-		knownCardsPanel.updatePanels(getHumanPlayer(), buildDemoSeenCards());
+		Map<Card, Player> startingSeenCards = buildDemoSeenCards();
+		knownCardsPanel.updatePanels(getHumanPlayer(), startingSeenCards);
+		board.setKnownCardsPanel(knownCardsPanel, startingSeenCards);
 	}
 
 	private void showSplashScreen() {

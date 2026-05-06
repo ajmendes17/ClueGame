@@ -539,6 +539,10 @@ public class Board extends JPanel {
 		turnManager.setControlPanel(controlPanel);
 	}
 
+	public void setKnownCardsPanel(KnownCardsPanel knownCardsPanel, Map<Card, Player> initialSeenCards) {
+		turnManager.setKnownCardsPanel(knownCardsPanel, initialSeenCards);
+	}
+
 	public void processNextPlayer() {
 		turnManager.processNextPlayer();
 	}

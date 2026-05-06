@@ -4,6 +4,8 @@ import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -18,6 +20,8 @@ public class TurnManager {
 	private boolean waitingForHumanMove;
 	private Random turnRandom;
 	private Set<Player> playersMovedBySuggestion;
+	private KnownCardsPanel knownCardsPanel;
+	private Map<Card, Player> humanSeenCards;
 
 	public TurnManager(Board board) {
 		this.board = board;
@@ -26,6 +30,8 @@ public class TurnManager {
 		this.waitingForHumanMove = false;
 		this.turnRandom = new Random();
 		this.playersMovedBySuggestion = new HashSet<>();
+		this.knownCardsPanel = null;
+		this.humanSeenCards = new LinkedHashMap<>();
 	}
 
 	public void reset() {
@@ -37,6 +43,14 @@ public class TurnManager {
 
 	public void setControlPanel(GameControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
+	}
+
+	public void setKnownCardsPanel(KnownCardsPanel knownCardsPanel, Map<Card, Player> initialSeenCards) {
+		this.knownCardsPanel = knownCardsPanel;
+		humanSeenCards.clear();
+		if (initialSeenCards != null) {
+			humanSeenCards.putAll(initialSeenCards);
+		}
 	}
 
 	public int getCurrentRoll() {
@@ -165,9 +179,19 @@ public class TurnManager {
 
 		if (result.wasDisproved()) {
 			accuser.addSeenCard(result.getDisprovingCard());
+			recordHumanSeenCard(accuser, result);
 		}
 
 		return result;
+	}
+
+	private void recordHumanSeenCard(Player accuser, SuggestionResult result) {
+		if (!(accuser instanceof HumanPlayer) || knownCardsPanel == null) {
+			return;
+		}
+
+		humanSeenCards.put(result.getDisprovingCard(), result.getDisprovingPlayer());
+		knownCardsPanel.updatePanels(accuser, humanSeenCards);
 	}
 
 	private void addStayTargetIfAllowed(Player player, BoardCell startCell) {
